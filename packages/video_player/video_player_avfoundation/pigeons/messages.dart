@@ -14,6 +14,12 @@ import 'package:pigeon/pigeon.dart';
   ),
   copyrightHeader: 'pigeons/copyright.txt',
 ))
+class PausePointsMessage{
+  PausePointsMessage(this.textureId,this.pausePointsMs);
+  int textureId;
+  List<int?> pausePointsMs;
+}
+
 class TextureMessage {
   TextureMessage(this.textureId);
   int textureId;
@@ -81,4 +87,6 @@ abstract class AVFoundationVideoPlayerApi {
   void pause(TextureMessage msg);
   @ObjCSelector('setMixWithOthers:')
   void setMixWithOthers(MixWithOthersMessage msg);
+  @ObjCSelector('setPausePoints:')
+  void setPausePoints(PausePointsMessage msg);
 }

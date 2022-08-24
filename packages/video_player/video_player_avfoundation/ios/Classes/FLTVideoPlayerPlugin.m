@@ -63,6 +63,35 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
   return [self initWithURL:[NSURL fileURLWithPath:path] frameUpdater:frameUpdater httpHeaders:@{}];
 }
 
+// inteket tartalmazó tömb, milliseconds
+- (void)setPausePoints:(NSArray *)pausePointsInMs {
+    NSMutableArray *times = [NSMutableArray array];
+    // CMTime tömb elkészítése
+    
+    for(int i=0;i<pausePointsInMs.count;i++){
+        NSNumber *ms = [pausePointsInMs objectAtIndex:i];
+        int msAsInt = [ms intValue];
+        
+        Float64 seconds = ((Float64)msAsInt) / 1000;
+        
+    
+        CMTime time = CMTimeMakeWithSeconds(seconds, 600);
+        
+        [times addObject: [NSValue valueWithCMTime:time]];
+    }
+    
+  
+    typeof(self) __weak weakSelf = self;
+       
+    [_player addBoundaryTimeObserverForTimes:times
+                                        queue:dispatch_get_main_queue()
+                                        usingBlock:^{
+        [weakSelf pause];
+        //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
+        [weakSelf updatePlayingState];
+    }];
+}
+
 - (void)addObservers:(AVPlayerItem *)item {
   [item addObserver:self
          forKeyPath:@"loadedTimeRanges"
@@ -226,12 +255,23 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
   _player = [AVPlayer playerWithPlayerItem:item];
   _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-
+    
   [self createVideoOutputAndDisplayLink:frameUpdater];
 
   [self addObservers:item];
 
   [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ] completionHandler:assetCompletionHandler];
+    
+    NSLog(@"HERE");
+    NSMutableArray *array = [NSMutableArray array];
+    
+    [array addObject:[NSNumber numberWithInt:1000]];
+    [array addObject:[NSNumber numberWithInt:2000]];
+    [array addObject:[NSNumber numberWithInt:3000]];
+    
+    NSLog(@"after addobject");
+
+    [self setPausePoints: array];
 
   return self;
 }
@@ -393,6 +433,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   _isLooping = isLooping;
 }
 
+
 - (void)setVolume:(double)volume {
   _player.volume = (float)((volume < 0.0) ? 0.0 : ((volume > 1.0) ? 1.0 : volume));
 }
@@ -493,8 +534,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   [registrar publish:instance];
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
   NSLog(@"🔥 🔥 🔥Some registration happening...");
-
 }
+
 
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   self = [super init];
@@ -514,6 +555,18 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   // doesn't currently support it.
   // FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, nil);
 }
+
+// bdezso
+// a plugin-hez hozzáadjuk a message kezelését
+- (void)setPausePoints:(FLTPausePointsMessage *)input error:(FlutterError * _Nullable __autoreleasing *)error{
+    
+  FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
+    [player setPausePoints:input.pausePointsMs];
+  
+    //[player setPausePoints:input.position.intValue];
+  //[self.registry textureFrameAvailable:input.textureId.intValue];
+}
+
 
 - (FLTTextureMessage *)onPlayerSetup:(FLTVideoPlayer *)player
                         frameUpdater:(FLTFrameUpdater *)frameUpdater {
@@ -591,6 +644,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
   player.isLooping = input.isLooping.boolValue;
 }
+
 
 - (void)setVolume:(FLTVolumeMessage *)input error:(FlutterError **)error {
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
