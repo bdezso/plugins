@@ -418,13 +418,13 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)play {
-    NSLog(@"Start the video playback");
+    NSLog(@"Start the video playback (NATIVE CODE)");
   _isPlaying = YES;
   [self updatePlayingState];
 }
 
 - (void)pause {
-    NSLog(@"Stop the video playback");
+    NSLog(@"Stop the video playback (NATIVE CODE)");
   _isPlaying = NO;
   [self updatePlayingState];
 }
