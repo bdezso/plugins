@@ -1,0 +1,1 @@
+flutter pub run pigeon --input ./pigeons/messages.dart --java_out=auto-gen-pigeon-for-native-code/messages.g.java --objc_header_out=auto-gen-pigeon-for-native-code/messages.g.h --objc_source_out=auto-gen-pigeon-for-native-code/messages.g.m
