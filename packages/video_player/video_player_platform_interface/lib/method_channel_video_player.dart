@@ -3,11 +3,9 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-
 import 'messages.g.dart';
 import 'video_player_platform_interface.dart';
 
