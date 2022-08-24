@@ -4,9 +4,10 @@
 
 // ignore_for_file: public_member_api_docs
 
+
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
-import 'mini_controller.dart';
 
 void main() {
   runApp(
@@ -53,12 +54,12 @@ class _ButterFlyAssetVideo extends StatefulWidget {
 }
 
 class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
-  late MiniController _controller;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = MiniController.asset('assets/Butterfly-209.mp4');
+    _controller = VideoPlayerController.asset('assets/Butterfly-209.mp4');
 
     _controller.addListener(() {
       setState(() {});
@@ -91,7 +92,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
                 children: <Widget>[
                   VideoPlayer(_controller),
                   _ControlsOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller),
+      
                 ],
               ),
             ),
@@ -108,12 +109,12 @@ class _BumbleBeeRemoteVideo extends StatefulWidget {
 }
 
 class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
-  late MiniController _controller;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = MiniController.network(
+    _controller = VideoPlayerController.network(
       'https://mrkresz-content-bucket.s3.eu-central-1.amazonaws.com/applicationData/extended-path-videos/4b0046fd-0be7-4a07-bc7c-c1a0069116b1/finalized/50816bc9-6118-4dd1-a90e-fb72652bb06f-final-from-anonymized.mp4',
     );
 
@@ -121,6 +122,8 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
       print("update received");
       print(_controller.value.position.inMilliseconds);
     });
+
+    _controller.setPausePoints([1000,2000,3000,4000,5000]);
 
     _controller.addListener(() {
       setState(() {});
@@ -150,7 +153,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
                 children: <Widget>[
                   VideoPlayer(_controller),
                   _ControlsOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller),
+                
                 ],
               ),
             ),
@@ -176,7 +179,7 @@ class _ControlsOverlay extends StatelessWidget {
     10.0,
   ];
 
-  final MiniController controller;
+  final VideoPlayerController controller;
 
   @override
   Widget build(BuildContext context) {

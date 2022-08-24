@@ -9,14 +9,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  video_player_avfoundation:
-    # When depending on this package from a real application you should use:
-    #   video_player_avfoundation: ^x.y.z
-    # See https://dart.dev/tools/pub/dependencies#version-constraints
-    # The example app is bundled with the plugin so we use a path dependency on
-    # the parent directory to use the current plugin's version.
-    path: ../
-  video_player_platform_interface: ">=4.2.0 <6.0.0"
+
+
+dependency_overrides: 
+  video_player: 
+    git: 
+      url: https://github.com/bdezso/plugins
+      path: packages/video_player/video_player
+      ref: observe-boundary-timing
+  video_player_platform_interface: 
+    git: 
+      url: https://github.com/bdezso/plugins
+      path: packages/video_player/video_player_platform_interface
+      ref: observe-boundary-timing
+
 
 dev_dependencies:
   flutter_driver:
