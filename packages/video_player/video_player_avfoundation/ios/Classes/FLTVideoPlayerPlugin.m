@@ -557,7 +557,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 // bdezso
 // a plugin-hez hozzáadjuk a message kezelését
 - (void)setPausePoints:(FLTPausePointsMessage *)input error:(FlutterError * _Nullable __autoreleasing *)error{
-    
+    NSLog(@"Pause points receive native side");
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
     [player setPausePoints:input.pausePointsMs];
   

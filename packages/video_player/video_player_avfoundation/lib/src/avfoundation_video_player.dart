@@ -154,6 +154,7 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setPausePoints(int textureId, List<int> pausePoints ){
+    print("Pause points called (avfoundation_video_player.dart)");
     return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints));
   }
 
