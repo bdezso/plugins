@@ -166,6 +166,8 @@ class VideoPlayerApi {
   Future<void> initialize() async {
     const BasicMessageChannel<Object> channel =
         BasicMessageChannel<Object>('dev.flutter.pigeon.VideoPlayerApi.initialize', StandardMessageCodec());
+
+    print("before send initialize"); 
     final Map<Object, Object> replyMap = await channel.send(null) as Map<Object, Object>;
     if (replyMap == null) {
       throw PlatformException(
@@ -189,7 +191,10 @@ class VideoPlayerApi {
     final Object encoded = arg.encode();
     const BasicMessageChannel<Object> channel =
         BasicMessageChannel<Object>('dev.flutter.pigeon.VideoPlayerApi.create', StandardMessageCodec());
+    print("before send");
     final Map<Object, Object> replyMap = await channel.send(encoded) as Map<Object, Object>;
+    print("after send");
+
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
