@@ -10,18 +10,21 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-dependency_overrides: 
   video_player: 
     git: 
       url: https://github.com/bdezso/plugins
       path: packages/video_player/video_player
       ref: observe-boundary-timing
+
+dependency_overrides: 
+  video_player_avfoundation: 
+    path: ../
   video_player_platform_interface: 
     git: 
       url: https://github.com/bdezso/plugins
       path: packages/video_player/video_player_platform_interface
       ref: observe-boundary-timing
+
 
 
 dev_dependencies:

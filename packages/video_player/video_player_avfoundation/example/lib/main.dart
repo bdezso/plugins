@@ -123,7 +123,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
       print(_controller.value.position.inMilliseconds);
     });
 
-    //_controller.setPausePoints([1000,2000,3000,4000,5000]);
+    _controller.setPausePoints([500,1000,2000,3000,4000,5000,10000]);
 
     _controller.addListener(() {
       setState(() {});
