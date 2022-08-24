@@ -355,6 +355,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         break;
     }
 
+
     if (videoPlayerOptions?.mixWithOthers != null) {
       await _videoPlayerPlatform
           .setMixWithOthers(videoPlayerOptions!.mixWithOthers);
@@ -423,6 +424,11 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         .listen(eventListener, onError: errorListener);
     return initializingCompleter.future;
   }
+
+  // break points (bdezso)
+  Future<void> setPausePoints(List<int> pausePointsMs){
+    return _videoPlayerPlatform.setPausePoints(_textureId,pausePointsMs);
+  } 
 
   @override
   Future<void> dispose() async {
@@ -605,6 +611,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith(playbackSpeed: speed);
     await _applyPlaybackSpeed();
   }
+
+
 
   /// Sets the caption offset.
   ///
