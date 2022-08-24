@@ -362,6 +362,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           .setMixWithOthers(videoPlayerOptions!.mixWithOthers);
     }
 
+    _addAutoPauseListener();
+
     _textureId = (await _videoPlayerPlatform.create(dataSourceDescription)) ??
         kUninitializedTextureId;
     _creatingCompleter!.complete(null);
@@ -471,6 +473,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> setLooping(bool looping) async {
     value = value.copyWith(isLooping: looping);
     await _applyLooping();
+  }
+
+  void _addAutoPauseListener(){
+    _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(textureId).listen((event) {
+      this.pause();
+      // TODO: Sync playing
+    });
   }
 
   /// auto pause happen
