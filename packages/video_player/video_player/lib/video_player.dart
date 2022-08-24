@@ -473,8 +473,9 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyLooping();
   }
 
+  /// auto pause happen
   Stream<int> getAutoPauseHappenStream(){
-    //_videoPlayerPlatform
+    return _videoPlayerPlatform.getAutoPauseHappenStream();
   }
 
   /// Pauses the video.
