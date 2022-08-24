@@ -28,6 +28,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> init() {
+    print("call method channel video player init");
     return _api.initialize();
   }
 
