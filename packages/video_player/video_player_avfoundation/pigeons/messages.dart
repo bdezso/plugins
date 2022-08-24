@@ -90,3 +90,10 @@ abstract class AVFoundationVideoPlayerApi {
   @ObjCSelector('setPausePoints:')
   void setPausePoints(PausePointsMessage msg);
 }
+
+@FlutterApi()
+abstract class VideoPlayerFlutterApi {
+  // setPausePoints által egy auto megállítás történt
+  void autoPauseHappen(PositionMessage msg);
+}
+

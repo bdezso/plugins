@@ -573,3 +573,51 @@ class AVFoundationVideoPlayerApi {
     }
   }
 }
+
+class _VideoPlayerFlutterApiCodec extends StandardMessageCodec {
+  const _VideoPlayerFlutterApiCodec();
+  @override
+  void writeValue(WriteBuffer buffer, Object? value) {
+    if (value is PositionMessage) {
+      buffer.putUint8(128);
+      writeValue(buffer, value.encode());
+    } else 
+{
+      super.writeValue(buffer, value);
+    }
+  }
+  @override
+  Object? readValueOfType(int type, ReadBuffer buffer) {
+    switch (type) {
+      case 128:       
+        return PositionMessage.decode(readValue(buffer)!);
+      
+      default:      
+        return super.readValueOfType(type, buffer);
+      
+    }
+  }
+}
+abstract class VideoPlayerFlutterApi {
+  static const MessageCodec<Object?> codec = _VideoPlayerFlutterApiCodec();
+
+  void autoPauseHappen(PositionMessage msg);
+  static void setup(VideoPlayerFlutterApi? api, {BinaryMessenger? binaryMessenger}) {
+    {
+      final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.VideoPlayerFlutterApi.autoPauseHappen', codec, binaryMessenger: binaryMessenger);
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object? message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.VideoPlayerFlutterApi.autoPauseHappen was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final PositionMessage? arg_msg = (args[0] as PositionMessage?);
+          assert(arg_msg != null, 'Argument for dev.flutter.pigeon.VideoPlayerFlutterApi.autoPauseHappen was null, expected non-null PositionMessage.');
+          api.autoPauseHappen(arg_msg!);
+          return;
+        });
+      }
+    }
+  }
+}

@@ -44,9 +44,11 @@
 @property(nonatomic, readonly) BOOL isPlaying;
 @property(nonatomic) BOOL isLooping;
 @property(nonatomic, readonly) BOOL isInitialized;
+@property(nonatomic) void (^autoPauseHappen)(NSNumber *pausedPosition);
 - (instancetype)initWithURL:(NSURL *)url
                frameUpdater:(FLTFrameUpdater *)frameUpdater
-                httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers;
+                httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers
+                autoPauseHappenCompletionHandler:(void (^)(NSNumber *pausedPosition))autoPauseHandler;
 @end
 
 static void *timeRangeContext = &timeRangeContext;
@@ -60,11 +62,18 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
 @implementation FLTVideoPlayer
 - (instancetype)initWithAsset:(NSString *)asset frameUpdater:(FLTFrameUpdater *)frameUpdater {
   NSString *path = [[NSBundle mainBundle] pathForResource:asset ofType:nil];
-  return [self initWithURL:[NSURL fileURLWithPath:path] frameUpdater:frameUpdater httpHeaders:@{}];
+    return [self initWithURL:[NSURL fileURLWithPath:path] frameUpdater:frameUpdater httpHeaders:@{}
+    autoPauseHappenCompletionHandler: ^(NSNumber *newPosition){
+        NSLog(@"Not implemented auto pause handler asset init error");
+    }
+    ];
 }
 
 // inteket tartalmazó tömb, milliseconds
 - (void)setPausePoints:(NSArray *)pausePointsInMs {
+    // TODO: Az előző time observert töröljük
+    // removeBoundaryTimeObserver
+    
     NSMutableArray *times = [NSMutableArray array];
     // CMTime tömb elkészítése
     
@@ -90,6 +99,10 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         [weakSelf pause];
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         [weakSelf updatePlayingState];
+        
+        if(weakSelf.autoPauseHappen != NULL){
+            weakSelf.autoPauseHappen([NSNumber numberWithLong:[weakSelf position]] );
+        }
     }];
 }
 
@@ -209,8 +222,11 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (instancetype)initWithURL:(NSURL *)url
-               frameUpdater:(FLTFrameUpdater *)frameUpdater
-                httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers {
+                frameUpdater:(FLTFrameUpdater *)frameUpdater
+                httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers
+                autoPauseHappenCompletionHandler:(void (^)(NSNumber *pausedPosition))autoPauseHandler{
+    
+    self.autoPauseHappen = autoPauseHandler;
   NSDictionary<NSString *, id> *options = nil;
   if ([headers count] != 0) {
     options = @{@"AVURLAssetHTTPHeaderFieldsKey" : headers};
@@ -522,6 +538,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 @interface FLTVideoPlayerPlugin () <FLTAVFoundationVideoPlayerApi>
 @property(readonly, weak, nonatomic) NSObject<FlutterTextureRegistry> *registry;
 @property(readonly, weak, nonatomic) NSObject<FlutterBinaryMessenger> *messenger;
+@property(nonatomic) FLTVideoPlayerFlutterApi *hostToFlutterApi;
 @property(readonly, strong, nonatomic)
     NSMutableDictionary<NSNumber *, FLTVideoPlayer *> *playersByTextureId;
 @property(readonly, strong, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
@@ -597,6 +614,10 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 - (FLTTextureMessage *)create:(FLTCreateMessage *)input error:(FlutterError **)error {
   FLTFrameUpdater *frameUpdater = [[FLTFrameUpdater alloc] initWithRegistry:_registry];
   FLTVideoPlayer *player;
+    
+    self.hostToFlutterApi = [[FLTVideoPlayerFlutterApi alloc] initWithBinaryMessenger:_messenger];
+
+
   if (input.asset) {
     NSString *assetPath;
     if (input.packageName) {
@@ -609,7 +630,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   } else if (input.uri) {
     player = [[FLTVideoPlayer alloc] initWithURL:[NSURL URLWithString:input.uri]
                                     frameUpdater:frameUpdater
-                                     httpHeaders:input.httpHeaders];
+                                     httpHeaders:input.httpHeaders
+                autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
+        FLTPositionMessage *msg = [FLTPositionMessage makeWithTextureId: [NSNumber numberWithLong:frameUpdater.textureId] position: pausedPosition];
+        
+        [self->_hostToFlutterApi autoPauseHappenMsg:msg completion:^(NSError * _Nullable) {
+            NSLog(@"hostToFlutterApi completion called");
+        } ];
+                }];
     return [self onPlayerSetup:player frameUpdater:frameUpdater];
   } else {
     *error = [FlutterError errorWithCode:@"video_player" message:@"not implemented" details:nil];
