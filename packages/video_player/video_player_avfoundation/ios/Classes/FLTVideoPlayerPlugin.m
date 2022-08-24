@@ -262,16 +262,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
   [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ] completionHandler:assetCompletionHandler];
     
-    NSLog(@"HERE");
     NSMutableArray *array = [NSMutableArray array];
     
     [array addObject:[NSNumber numberWithInt:1000]];
     [array addObject:[NSNumber numberWithInt:2000]];
     [array addObject:[NSNumber numberWithInt:3000]];
-    
-    NSLog(@"after addobject");
 
-    [self setPausePoints: array];
+    // for test only
+    //[self setPausePoints: array];
 
   return self;
 }

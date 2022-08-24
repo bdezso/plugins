@@ -153,6 +153,11 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> setPausePoints(int textureId, List<int> pausePoints ){
+    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints));
+  }
+
+  @override
   Widget buildView(int textureId) {
     return Texture(textureId: textureId);
   }

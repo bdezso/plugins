@@ -426,7 +426,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return initializingCompleter.future;
   }
 
-  // break points (bdezso)
+  /// break points (bdezso)
   Future<void> setPausePoints(List<int> pausePointsMs){
     return _videoPlayerPlatform.setPausePoints(_textureId,pausePointsMs);
   } 
