@@ -15,16 +15,17 @@ import 'video_player_platform_interface.dart';
 /// Implementation of  host -> flutter communication
 class VideoPlayerFlutterApiImpl extends VideoPlayerFlutterApi{
   /// notify when host pause the video because of break points which was set by setPausePoints
-  BehaviorSubject<int> _autoPauseHappenNotifier = BehaviorSubject<int>();
+  BehaviorSubject<PositionMessage> _autoPauseHappenNotifier = BehaviorSubject<PositionMessage>();
 
   // Ez akkor hívódik meg, amikor a host üzenetet küld számunkra
   @override
   void autoPauseHappen(PositionMessage arg) {
-    _autoPauseHappenNotifier.add(arg.position);
+    _autoPauseHappenNotifier.add(arg);
   }
 
-  Stream<int> getAutoPauseHappenStream(){
-    return _autoPauseHappenNotifier.stream;
+  // 
+  Stream<PositionMessage> getAutoPauseHappenStreamForTextureId(int textureId){
+    return _autoPauseHappenNotifier.stream.where((PositionMessage event) => event.textureId == textureId);
   }
 }
 
@@ -45,8 +46,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Stream<int> getAutoPauseHappenStream(){
-    return _flutterApi.getAutoPauseHappenStream();
+  Stream<PositionMessage> getAutoPauseHappenStreamForTextureId(int textureId){
+    return _flutterApi.getAutoPauseHappenStreamForTextureId(textureId);
   }
 
   // bdezso

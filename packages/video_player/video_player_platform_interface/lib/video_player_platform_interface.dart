@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:video_player_platform_interface/messages.g.dart';
 
 import 'method_channel_video_player.dart';
 
@@ -110,7 +111,7 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
   }
   
   /// setPausePoints által auto pause történt (Observe boundary timing)
-  Stream<int> getAutoPauseHappenStream(){
+  Stream<PositionMessage> getAutoPauseHappenStreamForTextureId(int textureId){
     throw UnimplementedError('not implementet auto pause happen stream');
   }
 }
