@@ -83,6 +83,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
   
     typeof(self) __weak weakSelf = self;
        
+    
     [_player addBoundaryTimeObserverForTimes:times
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
@@ -531,7 +532,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   FLTVideoPlayerPlugin *instance = [[FLTVideoPlayerPlugin alloc] initWithRegistrar:registrar];
   [registrar publish:instance];
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
-  NSLog(@"🔥 🔥 🔥Some registration happening...");
+  NSLog(@"🔥 🔥 🔥Some registration happening, custom video player fork  ios...");
 }
 
 
