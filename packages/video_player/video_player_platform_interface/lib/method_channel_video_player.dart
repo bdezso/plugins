@@ -18,6 +18,14 @@ import 'video_player_platform_interface.dart';
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   final VideoPlayerApi _api = VideoPlayerApi();
 
+  // bdezso
+  @override
+  Future<void> setPausePoints(int textureId, List<int> pausePoints ){
+    return _api.setPausePoints(PausePointsMessage()
+    ..pausePointsMs = pausePoints
+    ..textureId=textureId);
+  }
+
   @override
   Future<void> init() {
     return _api.initialize();
@@ -27,6 +35,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> dispose(int textureId) {
     return _api.dispose(TextureMessage()..textureId = textureId);
   }
+
 
   @override
   Future<int?> create(DataSource dataSource) async {

@@ -103,6 +103,11 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
   Future<void> setMixWithOthers(bool mixWithOthers) {
     throw UnimplementedError('setMixWithOthers() has not been implemented.');
   }
+
+  /// Sets break points for play (bdezso)
+  Future<void> setPausePoints(int textureId, List<int> pausePoints ){
+    throw UnimplementedError('setPausePoints has not been implemented');
+  }
 }
 
 /// Description of the data source used to create an instance of

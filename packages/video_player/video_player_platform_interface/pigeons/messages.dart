@@ -6,6 +6,13 @@
 
 import 'package:pigeon/pigeon_lib.dart';
 
+
+// bdezso
+class PausePointsMessage{
+  int textureId;
+  List<int> pausePointsMs;
+}
+
 class TextureMessage {
   int textureId;
 }
@@ -55,6 +62,7 @@ abstract class VideoPlayerApi {
   void seekTo(PositionMessage msg);
   void pause(TextureMessage msg);
   void setMixWithOthers(MixWithOthersMessage msg);
+  void setPausePoints(PausePointsMessage msg); // bdezso
 }
 
 void configurePigeon(PigeonOptions opts) {
