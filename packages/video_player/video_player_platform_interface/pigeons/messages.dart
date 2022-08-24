@@ -2,40 +2,62 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart = 2.9
+// @dart = 2.12.0 
 
 import 'package:pigeon/pigeon_lib.dart';
 
-
 // bdezso
-class PausePointsMessage{
+class PausePointsMessage {
   int textureId;
-  List<int> pausePointsMs;
+  List<int?> pausePointsMs;
+  PausePointsMessage({
+    required this.textureId,
+    required this.pausePointsMs,
+  });
 }
 
 class TextureMessage {
   int textureId;
+  TextureMessage({
+    required this.textureId,
+  });
 }
 
 
 class LoopingMessage {
   int textureId;
   bool isLooping;
+  LoopingMessage({
+    required this.textureId,
+    required this.isLooping,
+  });
 }
 
 class VolumeMessage {
   int textureId;
   double volume;
+  VolumeMessage({
+    required this.textureId,
+    required this.volume,
+  });
 }
 
 class PlaybackSpeedMessage {
   int textureId;
   double speed;
+  PlaybackSpeedMessage({
+    required this.textureId,
+    required this.speed,
+  });
 }
 
 class PositionMessage {
   int textureId;
   int position;
+  PositionMessage({
+    required this.textureId,
+    required this.position,
+  });
 }
 
 class CreateMessage {
@@ -44,10 +66,20 @@ class CreateMessage {
   String packageName;
   String formatHint;
   Map<String, String> httpHeaders;
+  CreateMessage({
+    required this.asset,
+    required this.uri,
+    required this.packageName,
+    required this.formatHint,
+    required this.httpHeaders,
+  });
 }
 
 class MixWithOthersMessage {
   bool mixWithOthers;
+  MixWithOthersMessage({
+    required this.mixWithOthers,
+  });
 }
 
 @HostApi(dartHostTestHandler: 'TestHostVideoPlayerApi')
