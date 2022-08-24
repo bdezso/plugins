@@ -98,8 +98,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
                                         usingBlock:^{
         [weakSelf pause];
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
-        [weakSelf updatePlayingState];
-        
+ 
         NSLog(@"Stop happening on boundary player callback");
         
         if(weakSelf.autoPauseHappen != NULL){
