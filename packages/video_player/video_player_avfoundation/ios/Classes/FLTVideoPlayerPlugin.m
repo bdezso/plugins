@@ -100,7 +100,10 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         [weakSelf updatePlayingState];
         
+        NSLog(@"Stop happening on boundary player callback");
+        
         if(weakSelf.autoPauseHappen != NULL){
+            NSLog(@"Lets call autoPauseHappen callback");
             weakSelf.autoPauseHappen([NSNumber numberWithLong:[weakSelf position]] );
         }
     }];
@@ -632,6 +635,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                                     frameUpdater:frameUpdater
                                      httpHeaders:input.httpHeaders
                 autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
+        NSLog(@"inside callback");
         FLTPositionMessage *msg = [FLTPositionMessage makeWithTextureId: [NSNumber numberWithLong:frameUpdater.textureId] position: pausedPosition];
         
         [self->_hostToFlutterApi autoPauseHappenMsg:msg completion:^(NSError * _Nullable) {

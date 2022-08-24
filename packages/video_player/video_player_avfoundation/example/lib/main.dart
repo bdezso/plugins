@@ -131,9 +131,10 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
     });
     _controller.initialize().then((value) async{
       _controller.setPausePoints([1500,151843]);
-
-      await Future<void>.delayed(Duration(milliseconds:4000));
-      _controller.seekTo(Duration(milliseconds:141843));
+      _controller.getAutoPauseHappenStream().listen((event) {
+        print("stop at ms");
+        print(event);
+      });
     });
 
     

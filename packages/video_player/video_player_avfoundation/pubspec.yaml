@@ -19,6 +19,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
+  rxdart: ^0.27.5
 
 dependency_overrides:
   video_player: 

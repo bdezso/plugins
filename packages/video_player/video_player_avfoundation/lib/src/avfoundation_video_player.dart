@@ -6,15 +6,36 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
+import 'package:video_player_platform_interface/video_player_platform_interface.dart' as inter;
 
+import 'package:video_player_platform_interface/messages.g.dart' as interface_messages;
 import 'messages.g.dart';
+
+
+/// Implementation of  host -> flutter communication
+class VideoPlayerFlutterApiImpl extends VideoPlayerFlutterApi{
+  /// notify when host pause the video because of break points which was set by setPausePoints
+  final BehaviorSubject<PositionMessage> _autoPauseHappenNotifier = BehaviorSubject<PositionMessage>();
+
+  // Ez akkor hívódik meg, amikor a host üzenetet küld számunkra
+  @override
+  void autoPauseHappen(PositionMessage arg) {
+    _autoPauseHappenNotifier.add(arg);
+  }
+
+  // stream
+  Stream<PositionMessage> getAutoPauseStream(int textureId){
+    return _autoPauseHappenNotifier.stream.where((PositionMessage event) => event.textureId == textureId);
+  }
+}
 
 /// An iOS implementation of [VideoPlayerPlatform] that uses the
 /// Pigeon-generated [VideoPlayerApi].
 class AVFoundationVideoPlayer extends VideoPlayerPlatform {
   final AVFoundationVideoPlayerApi _api = AVFoundationVideoPlayerApi();
-
+  final VideoPlayerFlutterApiImpl _hostToFlutterApi = VideoPlayerFlutterApiImpl();
   /// Registers this class as the default instance of [VideoPlayerPlatform].
   static void registerWith() {
     VideoPlayerPlatform.instance = AVFoundationVideoPlayer();
@@ -22,8 +43,15 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> init() {
+    VideoPlayerFlutterApi.setup(this._hostToFlutterApi);
     return _api.initialize();
   }
+
+  @override 
+  Stream<interface_messages.PositionMessage> getAutoPauseHappenStreamForTextureId(int textureId){
+    return _hostToFlutterApi.getAutoPauseStream(textureId).map((event) => interface_messages.PositionMessage()..position = event.position..textureId=event.textureId);
+  }
+  
 
   @override
   Future<void> dispose(int textureId) {
