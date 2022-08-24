@@ -6,9 +6,27 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'messages.g.dart';
 import 'video_player_platform_interface.dart';
+
+
+/// Implementation of  host -> flutter communication
+class VideoPlayerFlutterApiImpl extends VideoPlayerFlutterApi{
+  /// notify when host pause the video because of break points which was set by setPausePoints
+  BehaviorSubject<int> _autoPauseHappenNotifier = BehaviorSubject<int>();
+
+  // Ez akkor hívódik meg, amikor a host üzenetet küld számunkra
+  @override
+  void autoPauseHappen(PositionMessage arg) {
+    _autoPauseHappenNotifier.add(arg.position);
+  }
+
+  Stream<int> getAutoPauseHappenStream(){
+    return _autoPauseHappenNotifier.stream;
+  }
+}
 
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 ///
@@ -17,6 +35,19 @@ import 'video_player_platform_interface.dart';
 /// this repository.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   final VideoPlayerApi _api = VideoPlayerApi();
+  final VideoPlayerFlutterApiImpl _flutterApi = VideoPlayerFlutterApiImpl();
+
+  @override
+  Future<void> init() async {
+    print("call method channel video player init");
+    VideoPlayerFlutterApi.setup(_flutterApi);
+    await _api.initialize();
+  }
+
+  @override
+  Stream<int> getAutoPauseHappenStream(){
+    return _flutterApi.getAutoPauseHappenStream();
+  }
 
   // bdezso
   @override
@@ -26,11 +57,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     ..textureId=textureId);
   }
 
-  @override
-  Future<void> init() {
-    print("call method channel video player init");
-    return _api.initialize();
-  }
 
   @override
   Future<void> dispose(int textureId) {

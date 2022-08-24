@@ -7,6 +7,25 @@ import 'dart:typed_data' show Uint8List, Int32List, Int64List, Float64List;
 
 import 'package:flutter/services.dart';
 
+class PositionMessage {
+  int textureId;
+  int position;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['textureId'] = textureId;
+    pigeonMap['position'] = position;
+    return pigeonMap;
+  }
+
+  static PositionMessage decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return PositionMessage()
+      ..textureId = pigeonMap['textureId'] as int
+      ..position = pigeonMap['position'] as int;
+  }
+}
+
 class TextureMessage {
   int textureId;
 
@@ -108,25 +127,6 @@ class PlaybackSpeedMessage {
   }
 }
 
-class PositionMessage {
-  int textureId;
-  int position;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['textureId'] = textureId;
-    pigeonMap['position'] = position;
-    return pigeonMap;
-  }
-
-  static PositionMessage decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return PositionMessage()
-      ..textureId = pigeonMap['textureId'] as int
-      ..position = pigeonMap['position'] as int;
-  }
-}
-
 class MixWithOthersMessage {
   bool mixWithOthers;
 
@@ -162,12 +162,30 @@ class PausePointsMessage {
   }
 }
 
+abstract class VideoPlayerFlutterApi {
+  void autoPauseHappen(PositionMessage arg);
+  static void setup(VideoPlayerFlutterApi api) {
+    {
+      const BasicMessageChannel<Object> channel =
+          BasicMessageChannel<Object>('dev.flutter.pigeon.VideoPlayerFlutterApi.autoPauseHappen', StandardMessageCodec());
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.VideoPlayerFlutterApi.autoPauseHappen was null. Expected PositionMessage.');
+          final PositionMessage input = PositionMessage.decode(message);
+          api.autoPauseHappen(input);
+          return;
+        });
+      }
+    }
+  }
+}
+
 class VideoPlayerApi {
   Future<void> initialize() async {
     const BasicMessageChannel<Object> channel =
         BasicMessageChannel<Object>('dev.flutter.pigeon.VideoPlayerApi.initialize', StandardMessageCodec());
-
-    print("before send initialize"); 
     final Map<Object, Object> replyMap = await channel.send(null) as Map<Object, Object>;
     if (replyMap == null) {
       throw PlatformException(
@@ -191,10 +209,7 @@ class VideoPlayerApi {
     final Object encoded = arg.encode();
     const BasicMessageChannel<Object> channel =
         BasicMessageChannel<Object>('dev.flutter.pigeon.VideoPlayerApi.create', StandardMessageCodec());
-    print("before send");
     final Map<Object, Object> replyMap = await channel.send(encoded) as Map<Object, Object>;
-    print("after send");
-
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',

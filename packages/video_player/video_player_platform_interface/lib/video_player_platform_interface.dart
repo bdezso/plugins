@@ -108,6 +108,10 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
   Future<void> setPausePoints(int textureId, List<int> pausePoints ){
     throw UnimplementedError('setPausePoints has not been implemented');
   }
+  
+  Stream<int> getAutoPauseHappenStream(){
+    throw UnimplementedError('not implementet auto pause happen stream');
+  }
 }
 
 /// Description of the data source used to create an instance of

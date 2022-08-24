@@ -17,6 +17,7 @@ class TextureMessage {
   int textureId;
 }
 
+
 class LoopingMessage {
   int textureId;
   bool isLooping;
@@ -63,6 +64,12 @@ abstract class VideoPlayerApi {
   void pause(TextureMessage msg);
   void setMixWithOthers(MixWithOthersMessage msg);
   void setPausePoints(PausePointsMessage msg); // bdezso
+}
+
+@FlutterApi()
+abstract class VideoPlayerFlutterApi {
+  // setPausePoints által egy auto megállítás történt
+  void autoPauseHappen(PositionMessage msg);
 }
 
 void configurePigeon(PigeonOptions opts) {
