@@ -109,6 +109,7 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('setPausePoints has not been implemented');
   }
   
+  /// setPausePoints által auto pause történt (Observe boundary timing)
   Stream<int> getAutoPauseHappenStream(){
     throw UnimplementedError('not implementet auto pause happen stream');
   }
