@@ -96,6 +96,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     [_player addBoundaryTimeObserverForTimes:times
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
+        // Possible out of sync
         [weakSelf pause];
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
  
@@ -417,11 +418,13 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)play {
+    NSLog(@"Start the video playback");
   _isPlaying = YES;
   [self updatePlayingState];
 }
 
 - (void)pause {
+    NSLog(@"Stop the video playback");
   _isPlaying = NO;
   [self updatePlayingState];
 }
