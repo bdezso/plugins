@@ -475,7 +475,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// auto pause happen
   Stream<int> getAutoPauseHappenStream(){
-    return _videoPlayerPlatform.getAutoPauseHappenStream();
+    return _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(_textureId).map((event) => event.position);
   }
 
   /// Pauses the video.
