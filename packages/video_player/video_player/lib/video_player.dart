@@ -473,6 +473,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyLooping();
   }
 
+  Stream<int> getAutoPauseHappenStream(){
+    //_videoPlayerPlatform
+  }
+
   /// Pauses the video.
   Future<void> pause() async {
     value = value.copyWith(isPlaying: false);
