@@ -97,7 +97,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
         // Possible out of sync
-        [_player pause];
+        [weakSelf pause]
         
         CMTimeShow(_player.currentTime);
         
