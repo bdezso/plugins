@@ -480,9 +480,11 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   // Viszont mi még nem synceltük be, hogy pause state-ben vagyunk
   // Ezt a legegyszerűbb, ha kiadunk egy pause-t
   void _addAutoPauseListener(){
+    print("add auto pause listener");
+    
     _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(textureId).listen((event) {
       this.value = this.value.copyWith(isPlaying: false);
-      print("isPlaying set to false");
+      print("isPlaying set to false (addAutoPauseLIStener in video_player.dart)");
     });
   }
 
