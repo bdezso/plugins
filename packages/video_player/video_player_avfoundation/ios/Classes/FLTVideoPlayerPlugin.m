@@ -97,6 +97,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     [_player addBoundaryTimeObserverForTimes:times
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
+        weakSelf.player.rate = 0.0;
         [weakSelf pause];
         
         // Possible out of sync
@@ -235,7 +236,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     
     self.autoPauseHappen = autoPauseHandler;
     NSDictionary<NSString *, id> *options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
-    /*
+    NSLog(@"use prefeer precise duration and timing key");
+    /* egyelőre nem használunk header-t
   if ([headers count] != 0) {
     options = @{
         @"AVURLAssetHTTPHeaderFieldsKey" : headers,
