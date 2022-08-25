@@ -362,9 +362,10 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     return;
   }
   if (_isPlaying) {
-      NSLog(@"(NATIVE) updatePlayingState: call _playar.play() ");
+      NSLog(@"(NATIVE) updatePlayingState: call _player.play() ");
     [_player play];
   } else {
+      NSLog(@"(NATIVE) updatePlayingState: call _player.pause() ");
     [_player pause];
   }
     // Nem kapcsoljuk le a display linked sose
