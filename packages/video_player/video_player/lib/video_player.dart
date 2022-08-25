@@ -475,10 +475,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyLooping();
   }
 
+  // Automatikus megállítás listener
+  // Ilyenkor a natív kód megállította a videót
+  // Viszont mi még nem synceltük be, hogy pause state-ben vagyunk
+  // Ezt a legegyszerűbb, ha kiadunk egy pause-t
   void _addAutoPauseListener(){
     _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(textureId).listen((event) {
       this.pause();
-      // TODO: Sync playing
     });
   }
 
