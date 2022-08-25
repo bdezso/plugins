@@ -78,10 +78,10 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     // CMTime tömb elkészítése
     
     for(int i=0;i<pausePointsInMs.count;i++){
-        NSNumber *ms = [pausePointsInMs objectAtIndex:i];
-        int msAsInt = [ms intValue];
-        
-        CMTime time = CMTimeMake(msAsInt, _player.currentItem.duration.timescale*1000);
+        NSNumber *pausePointNSNumber = [pausePointsInMs objectAtIndex:i];
+        double doubleMs = [pausePointNSNumber doubleValue]/1000;
+            
+        CMTime time = CMTimeMakeWithSeconds(doubleMs, _player.currentItem.duration.timescale);
         CMTimeShow(time);
         
         [times addObject: [NSValue valueWithCMTime:time]];
