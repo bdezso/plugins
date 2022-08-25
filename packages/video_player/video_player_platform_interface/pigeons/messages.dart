@@ -4,20 +4,25 @@
 
 import 'package:pigeon/pigeon_lib.dart';
 
+
 // bdezso
 class PausePointsMessage {
   int textureId;
   List<int?> pausePointsMs;
+  int sentTimestampFromFlutter;
   PausePointsMessage({
     required this.textureId,
     required this.pausePointsMs,
+    required this.sentTimestampFromFlutter
   });
 }
 
 class TextureMessage {
   int textureId;
+  int sentTimestampFromFlutter;
   TextureMessage({
     required this.textureId,
+    required this.sentTimestampFromFlutter
   });
 }
 

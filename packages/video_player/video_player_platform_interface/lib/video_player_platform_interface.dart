@@ -7,8 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:video_player_platform_interface/messages.g.dart';
 
-import 'method_channel_video_player.dart';
-
 /// The interface that implementations of video_player must implement.
 ///
 /// Platform implementations should extend this class rather than implement it as `video_player`
@@ -22,18 +20,18 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static VideoPlayerPlatform _instance = MethodChannelVideoPlayer();
+  static VideoPlayerPlatform? _instance;
 
   /// The default instance of [VideoPlayerPlatform] to use.
   ///
   /// Defaults to [MethodChannelVideoPlayer].
-  static VideoPlayerPlatform get instance => _instance;
+  static VideoPlayerPlatform? get instance => _instance;
 
   /// Platform-specific plugins should override this with their own
   /// platform-specific class that extends [VideoPlayerPlatform] when they
   /// register themselves.
-  static set instance(VideoPlayerPlatform instance) {
-    PlatformInterface.verify(instance, _token);
+  static set instance(VideoPlayerPlatform? instance) {
+    PlatformInterface.verify(instance!, _token);
     _instance = instance;
   }
 
