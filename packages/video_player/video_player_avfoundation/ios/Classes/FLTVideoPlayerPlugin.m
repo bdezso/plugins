@@ -81,7 +81,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         NSNumber *pausePointNSNumber = [pausePointsInMs objectAtIndex:i];
         double doubleMs = [pausePointNSNumber doubleValue]/1000;
             
-        CMTime time = CMTimeMakeWithSeconds(doubleMs, _player.currentItem.duration.timescale);
+        CMTime time = CMTimeMakeWithSeconds(doubleMs, 100000000);
         CMTimeShow(time);
         
         [times addObject: [NSValue valueWithCMTime:time]];
