@@ -77,18 +77,16 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface FLTCreateMessage : NSObject
-/// `init` unavailable to enforce nonnull fields, see the `make` class method.
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)makeWithAsset:(NSString *)asset
-    uri:(NSString *)uri
-    packageName:(NSString *)packageName
-    formatHint:(NSString *)formatHint
-    httpHeaders:(NSDictionary<NSString *, NSString *> *)httpHeaders;
-@property(nonatomic, copy) NSString * asset;
-@property(nonatomic, copy) NSString * uri;
-@property(nonatomic, copy) NSString * packageName;
-@property(nonatomic, copy) NSString * formatHint;
-@property(nonatomic, strong) NSDictionary<NSString *, NSString *> * httpHeaders;
++ (instancetype)makeWithAsset:(nullable NSString *)asset
+    uri:(nullable NSString *)uri
+    packageName:(nullable NSString *)packageName
+    formatHint:(nullable NSString *)formatHint
+    httpHeaders:(nullable NSDictionary<NSString *, NSString *> *)httpHeaders;
+@property(nonatomic, copy, nullable) NSString * asset;
+@property(nonatomic, copy, nullable) NSString * uri;
+@property(nonatomic, copy, nullable) NSString * packageName;
+@property(nonatomic, copy, nullable) NSString * formatHint;
+@property(nonatomic, strong, nullable) NSDictionary<NSString *, NSString *> * httpHeaders;
 @end
 
 @interface FLTMixWithOthersMessage : NSObject

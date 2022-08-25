@@ -73,17 +73,17 @@ class PositionMessage {
 }
 
 class CreateMessage {
-  String asset;
-  String uri;
-  String packageName;
-  String formatHint;
-  Map<String?, String?> httpHeaders;
+  String? asset;
+  String? uri;
+  String? packageName;
+  String? formatHint;
+  Map<String?, String?>? httpHeaders;
   CreateMessage({
-    required this.asset,
-    required this.uri,
-    required this.packageName,
-    required this.formatHint,
-    required this.httpHeaders,
+    this.asset,
+    this.uri,
+    this.packageName,
+    this.formatHint,
+    this.httpHeaders,
   });
 }
 

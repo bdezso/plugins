@@ -167,18 +167,18 @@ class PositionMessage {
 
 class CreateMessage {
   CreateMessage({
-    required this.asset,
-    required this.uri,
-    required this.packageName,
-    required this.formatHint,
-    required this.httpHeaders,
+    this.asset,
+    this.uri,
+    this.packageName,
+    this.formatHint,
+    this.httpHeaders,
   });
 
-  String asset;
-  String uri;
-  String packageName;
-  String formatHint;
-  Map<String?, String?> httpHeaders;
+  String? asset;
+  String? uri;
+  String? packageName;
+  String? formatHint;
+  Map<String?, String?>? httpHeaders;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
@@ -193,11 +193,11 @@ class CreateMessage {
   static CreateMessage decode(Object message) {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return CreateMessage(
-      asset: pigeonMap['asset']! as String,
-      uri: pigeonMap['uri']! as String,
-      packageName: pigeonMap['packageName']! as String,
-      formatHint: pigeonMap['formatHint']! as String,
-      httpHeaders: (pigeonMap['httpHeaders'] as Map<Object?, Object?>?)!.cast<String?, String?>(),
+      asset: pigeonMap['asset'] as String?,
+      uri: pigeonMap['uri'] as String?,
+      packageName: pigeonMap['packageName'] as String?,
+      formatHint: pigeonMap['formatHint'] as String?,
+      httpHeaders: (pigeonMap['httpHeaders'] as Map<Object?, Object?>?)?.cast<String?, String?>(),
     );
   }
 }

@@ -198,11 +198,11 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 @end
 
 @implementation FLTCreateMessage
-+ (instancetype)makeWithAsset:(NSString *)asset
-    uri:(NSString *)uri
-    packageName:(NSString *)packageName
-    formatHint:(NSString *)formatHint
-    httpHeaders:(NSDictionary<NSString *, NSString *> *)httpHeaders {
++ (instancetype)makeWithAsset:(nullable NSString *)asset
+    uri:(nullable NSString *)uri
+    packageName:(nullable NSString *)packageName
+    formatHint:(nullable NSString *)formatHint
+    httpHeaders:(nullable NSDictionary<NSString *, NSString *> *)httpHeaders {
   FLTCreateMessage* pigeonResult = [[FLTCreateMessage alloc] init];
   pigeonResult.asset = asset;
   pigeonResult.uri = uri;
@@ -214,15 +214,10 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 + (FLTCreateMessage *)fromMap:(NSDictionary *)dict {
   FLTCreateMessage *pigeonResult = [[FLTCreateMessage alloc] init];
   pigeonResult.asset = GetNullableObject(dict, @"asset");
-  NSAssert(pigeonResult.asset != nil, @"");
   pigeonResult.uri = GetNullableObject(dict, @"uri");
-  NSAssert(pigeonResult.uri != nil, @"");
   pigeonResult.packageName = GetNullableObject(dict, @"packageName");
-  NSAssert(pigeonResult.packageName != nil, @"");
   pigeonResult.formatHint = GetNullableObject(dict, @"formatHint");
-  NSAssert(pigeonResult.formatHint != nil, @"");
   pigeonResult.httpHeaders = GetNullableObject(dict, @"httpHeaders");
-  NSAssert(pigeonResult.httpHeaders != nil, @"");
   return pigeonResult;
 }
 - (NSDictionary *)toMap {

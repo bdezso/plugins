@@ -87,11 +87,11 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
         break;
     }
     final CreateMessage message = CreateMessage(
-      asset: asset!,
-      packageName: packageName!,
-      uri: uri!,
+      asset: asset,
+      packageName: packageName,
+      uri: uri,
       httpHeaders: httpHeaders,
-      formatHint: formatHint!,
+      formatHint: formatHint,
     );
 
     final TextureMessage response = await _api.create(message);
