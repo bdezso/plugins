@@ -659,9 +659,9 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                                      httpHeaders:input.httpHeaders
                 autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
         
-        NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
         // NSTimeInterval is defined as double
-        NSNumber *timeStampObj = [NSNumber numberWithLongLong: timeStamp];
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        NSNumber *timeStampObj = [NSNumber numberWithLongLong: milliseconds];
         
         _lastPlayPauseEventTimestamp = timeStampObj;
         
@@ -720,11 +720,12 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
 - (void)play:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
+    
+    NSLog(@"%lld", [eventTimestamp longLongValue] );
+    NSLog(@"%lld", [_lastPlayPauseEventTimestamp longLongValue] );
 
-    if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
+    if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
         NSLog(@"Older message ignored");
-        NSLog(@"%lld", [eventTimestamp longLongValue] );
-        NSLog(@"%lld", [_lastPlayPauseEventTimestamp longLongValue] );
         return;
     }
     
