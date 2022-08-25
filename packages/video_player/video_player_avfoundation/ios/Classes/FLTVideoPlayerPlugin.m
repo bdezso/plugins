@@ -78,14 +78,15 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     
     NSMutableArray *times = [NSMutableArray array];
     // CMTime tömb elkészítése
+        
+    NSLog(@"(NATIVE) 🔥 timescale: %d", _player.currentItem.duration.timescale);
     
     for(int i=0;i<pausePointsInMs.count;i++){
         NSNumber *pausePointNSNumber = [pausePointsInMs objectAtIndex:i];
         double doubleMs = [pausePointNSNumber doubleValue]/1000;
-            
-        CMTime time = CMTimeMakeWithSeconds(doubleMs, 100000000);
-        // CMTimeShow(time);
         
+        CMTime time = CMTimeMakeWithSeconds(doubleMs, _player.currentItem.duration.timescale);
+
         [times addObject: [NSValue valueWithCMTime:time]];
     }
     
@@ -96,11 +97,13 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     [_player addBoundaryTimeObserverForTimes:times
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
-        // Possible out of sync
-        NSLog(@"Call pause by auto boundary timing");
         [weakSelf pause];
         
-        CMTimeShow(_player.currentTime);
+        // Possible out of sync
+        NSLog(@"(NATIVE) Call pause by auto boundary timing");
+        NSLog(@"(NATIVE) currentTime:");
+        CMTimeShow(weakSelf.player.currentTime);
+
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         
@@ -365,11 +368,11 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     return;
   }
   if (_isPlaying) {
+      [_player play];
       NSLog(@"(NATIVE) updatePlayingState: call _player.play() ");
-    [_player play];
   } else {
+      [_player pause];
       NSLog(@"(NATIVE) updatePlayingState: call _player.pause() ");
-    [_player pause];
   }
     // Nem kapcsoljuk le a display linked sose
     _displayLink.paused = false; //!_isPlaying;
@@ -432,9 +435,9 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)pause {
-    NSLog(@"(NATIVE) FLTVideoPlayer.stop() called");
   _isPlaying = NO;
   [self updatePlayingState];
+  NSLog(@"(NATIVE) FLTVideoPlayer.stop() called");
 }
 
 - (int64_t)position {
