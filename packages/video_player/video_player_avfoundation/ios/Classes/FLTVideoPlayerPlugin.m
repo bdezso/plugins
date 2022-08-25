@@ -463,6 +463,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)setPlaybackSpeed:(double)speed {
+  // Ha a videó meg van állítva, akkor ne lehessen playback speed-et állítnai
+  // hiszen ez esetben a videó elindulna magától!
+    if(_player.rate != 0){
+        NSLog("(NATIVE) Try to change playback speed when video is running. This is not allowed");
+        return;
+    }
+    
+
   // See https://developer.apple.com/library/archive/qa/qa1772/_index.html for an explanation of
   // these checks.
   if (speed > 2.0 && !_player.currentItem.canPlayFastForward) {
