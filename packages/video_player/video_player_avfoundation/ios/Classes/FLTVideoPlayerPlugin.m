@@ -234,13 +234,15 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                 autoPauseHappenCompletionHandler:(void (^)(NSNumber *pausedPosition))autoPauseHandler{
     
     self.autoPauseHappen = autoPauseHandler;
-  NSDictionary<NSString *, id> *options = nil;
+    NSDictionary<NSString *, id> *options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
+    /*
   if ([headers count] != 0) {
     options = @{
         @"AVURLAssetHTTPHeaderFieldsKey" : headers,
         @"AVURLAssetPreferPreciseDurationAndTimingKey": @true
     };
   }
+     */
     
   AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:url options:options];
   AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:urlAsset];
