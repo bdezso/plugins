@@ -21,7 +21,7 @@ export 'src/closed_caption_file.dart';
 
 VideoPlayerPlatform? _lastVideoPlayerPlatform;
 
-VideoPlayerPlatform? get _videoPlayerPlatform {
+VideoPlayerPlatform get _videoPlayerPlatform {
   final VideoPlayerPlatform? currentInstance = VideoPlayerPlatform.instance;
   if (_lastVideoPlayerPlatform != currentInstance) {
     // This will clear all open videos on the platform when a full restart is
