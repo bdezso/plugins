@@ -42,7 +42,7 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
   }
 
   int getCurrentTimestamp(){
-    return DateTime.now().millisecond;
+    return DateTime.now().microsecondsSinceEpoch;
   }
 
   @override
