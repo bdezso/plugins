@@ -97,10 +97,8 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
         // Possible out of sync
-        [weakSelf pause];
-        [weakSelf pause];
-        [weakSelf pause];
-        [weakSelf pause];
+        [_player pause];
+        
         NSLog(@"lots of paused called lol");
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
@@ -371,6 +369,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   } else {
     [_player pause];
   }
+    // Nem kapcsoljuk le a display linked sose
     _displayLink.paused = false; //!_isPlaying;
 }
 
