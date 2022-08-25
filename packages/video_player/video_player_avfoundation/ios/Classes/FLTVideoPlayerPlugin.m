@@ -234,6 +234,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                 httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers
                 autoPauseHappenCompletionHandler:(void (^)(NSNumber *pausedPosition))autoPauseHandler{
     
+    NSLog(@"Init with url called!");
     self.autoPauseHappen = autoPauseHandler;
     NSDictionary<NSString *, id> *options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
     NSLog(@"use prefeer precise duration and timing key");
