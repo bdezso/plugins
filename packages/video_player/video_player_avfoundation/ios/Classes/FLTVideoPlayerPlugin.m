@@ -94,14 +94,9 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     [_player addBoundaryTimeObserverForTimes:times
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
-        [_player seekToTime:_player.currentTime
-             toleranceBefore:kCMTimeZero
-             toleranceAfter:kCMTimeZero];
-        
         // Possible out of sync
         [_player pause];
         
-
         
         NSLog(@"lots of paused called lol");
         CMTimeShow(_player.currentTime);
