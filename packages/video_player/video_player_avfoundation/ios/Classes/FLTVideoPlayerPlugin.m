@@ -720,8 +720,11 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
 - (void)play:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
+
     if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
         NSLog(@"Older message ignored");
+        NSLog(@"%ld", [eventTimestamp longValue] );
+        NSLog(@"%ld", [_lastPlayPauseEventTimestamp longValue] );
         return;
     }
     
