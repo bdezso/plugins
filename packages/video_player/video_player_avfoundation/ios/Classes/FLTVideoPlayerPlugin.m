@@ -366,6 +366,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     return;
   }
   if (_isPlaying) {
+    NSLog("PLAY CALLED (NATIVE CODE)")
     [_player play];
   } else {
     [_player pause];
