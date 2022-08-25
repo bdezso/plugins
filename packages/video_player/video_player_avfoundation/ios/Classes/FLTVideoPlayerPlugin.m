@@ -97,7 +97,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
                                         queue:dispatch_get_main_queue()
                                         usingBlock:^{
         // Possible out of sync
-        NSLog("Call pause by auto boundary timing");
+        NSLog(@"Call pause by auto boundary timing");
         [weakSelf pause];
         
         CMTimeShow(_player.currentTime);
