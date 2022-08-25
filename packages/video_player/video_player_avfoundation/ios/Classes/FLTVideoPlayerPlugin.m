@@ -98,8 +98,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         [_player pause];
         
         NSLog(@"lots of paused called lol");
-        
-        CMTimeShow(_player.currentTime)
+        CMTimeShow(_player.currentTime);
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         
         
