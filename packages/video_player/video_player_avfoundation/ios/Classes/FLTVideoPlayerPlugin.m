@@ -99,7 +99,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         // Possible out of sync
         [_player pause];
         
-        CMTimeShow(_player.currentTime);
+        //CMTimeShow(_player.currentTime);
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         
