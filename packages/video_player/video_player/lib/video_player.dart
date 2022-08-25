@@ -481,7 +481,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   // Ezt a legegyszerűbb, ha kiadunk egy pause-t
   void _addAutoPauseListener(){
     _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(textureId).listen((event) {
-      this.pause();
+      this.value = this.value.copyWith(isPlaying: false);
     });
   }
 
