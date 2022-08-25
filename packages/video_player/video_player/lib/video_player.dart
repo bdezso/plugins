@@ -21,7 +21,7 @@ export 'src/closed_caption_file.dart';
 
 VideoPlayerPlatform? _lastVideoPlayerPlatform;
 
-VideoPlayerPlatform get _videoPlayerPlatform {
+VideoPlayerPlatform? get _videoPlayerPlatform {
   final VideoPlayerPlatform? currentInstance = VideoPlayerPlatform.instance;
   if (_lastVideoPlayerPlatform != currentInstance) {
     // This will clear all open videos on the platform when a full restart is
@@ -29,7 +29,7 @@ VideoPlayerPlatform get _videoPlayerPlatform {
     currentInstance?.init();
     _lastVideoPlayerPlatform = currentInstance;
   }
-  return currentInstance!;
+  return currentInstance as VideoPlayerPlatform;
 }
 
 /// The duration, current position, buffering state, error state and settings
@@ -358,11 +358,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
 
     if (videoPlayerOptions?.mixWithOthers != null) {
-      await _videoPlayerPlatform
-          .setMixWithOthers(videoPlayerOptions!.mixWithOthers);
+      await _videoPlayerPlatform?.setMixWithOthers(videoPlayerOptions!.mixWithOthers);
     }
 
-    _textureId = (await _videoPlayerPlatform.create(dataSourceDescription)) ??
+    _textureId = (await _videoPlayerPlatform?.create(dataSourceDescription)) ??
         kUninitializedTextureId;
 
     // Itt már létezik textureId, auto pause listener mehet
