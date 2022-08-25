@@ -619,7 +619,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     
     NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
     // NSTimeInterval is defined as double
-    NSNumber *timeStampObj = [NSNumber numberWithLong: timeStamp];
+    NSNumber *timeStampObj = [NSNumber numberWithLongLong: timeStamp];
     
   FLTTextureMessage *result = [FLTTextureMessage makeWithTextureId:@(textureId) sentTimestampFromFlutter:timeStampObj];
   return result;
@@ -661,7 +661,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
         
         NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
         // NSTimeInterval is defined as double
-        NSNumber *timeStampObj = [NSNumber numberWithLong: timeStamp];
+        NSNumber *timeStampObj = [NSNumber numberWithLongLong: timeStamp];
         
         _lastPlayPauseEventTimestamp = timeStampObj;
         
@@ -723,8 +723,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
     if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
         NSLog(@"Older message ignored");
-        NSLog(@"%ld", [eventTimestamp longValue] );
-        NSLog(@"%ld", [_lastPlayPauseEventTimestamp longValue] );
+        NSLog(@"%lld", [eventTimestamp longLongValue] );
+        NSLog(@"%lld", [_lastPlayPauseEventTimestamp longLongValue] );
         return;
     }
     
