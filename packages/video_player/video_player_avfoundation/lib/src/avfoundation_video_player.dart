@@ -41,6 +41,10 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
     VideoPlayerPlatform.instance = AVFoundationVideoPlayer();
   }
 
+  int getCurrentTimestamp(){
+    return DateTime.now().millisecond;
+  }
+
   @override
   Future<void> init() {
     VideoPlayerFlutterApi.setup(this._hostToFlutterApi);
@@ -55,7 +59,7 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> dispose(int textureId) {
-    return _api.dispose(TextureMessage(textureId: textureId));
+    return _api.dispose(TextureMessage(textureId: textureId,sentTimestampFromFlutter: this.getCurrentTimestamp()));
   }
 
   @override
@@ -83,11 +87,11 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
         break;
     }
     final CreateMessage message = CreateMessage(
-      asset: asset,
-      packageName: packageName,
-      uri: uri,
+      asset: asset!,
+      packageName: packageName!,
+      uri: uri!,
       httpHeaders: httpHeaders,
-      formatHint: formatHint,
+      formatHint: formatHint!,
     );
 
     final TextureMessage response = await _api.create(message);
@@ -104,12 +108,12 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> play(int textureId) {
-    return _api.play(TextureMessage(textureId: textureId));
+    return _api.play(TextureMessage(textureId: textureId,sentTimestampFromFlutter: this.getCurrentTimestamp()));
   }
 
   @override
   Future<void> pause(int textureId) {
-    return _api.pause(TextureMessage(textureId: textureId));
+    return _api.pause(TextureMessage(textureId: textureId,sentTimestampFromFlutter: this.getCurrentTimestamp()));
   }
 
   @override
@@ -141,7 +145,7 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<Duration> getPosition(int textureId) async {
     final PositionMessage response =
-        await _api.position(TextureMessage(textureId: textureId));
+        await _api.position(TextureMessage(textureId: textureId,sentTimestampFromFlutter: this.getCurrentTimestamp()));
     return Duration(milliseconds: response.position);
   }
 
@@ -183,7 +187,7 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<void> setPausePoints(int textureId, List<int> pausePoints ){
     print("Pause points called (avfoundation_video_player.dart)");
-    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints));
+    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints,sentTimestampFromFlutter: this.getCurrentTimestamp()));
   }
 
   @override

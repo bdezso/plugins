@@ -24,16 +24,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// `init` unavailable to enforce nonnull fields, see the `make` class method.
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)makeWithTextureId:(NSNumber *)textureId
-    pausePointsMs:(NSArray<NSNumber *> *)pausePointsMs;
+    pausePointsMs:(NSArray<NSNumber *> *)pausePointsMs
+    sentTimestampFromFlutter:(NSNumber *)sentTimestampFromFlutter;
 @property(nonatomic, strong) NSNumber * textureId;
 @property(nonatomic, strong) NSArray<NSNumber *> * pausePointsMs;
+@property(nonatomic, strong) NSNumber * sentTimestampFromFlutter;
 @end
 
 @interface FLTTextureMessage : NSObject
 /// `init` unavailable to enforce nonnull fields, see the `make` class method.
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)makeWithTextureId:(NSNumber *)textureId;
++ (instancetype)makeWithTextureId:(NSNumber *)textureId
+    sentTimestampFromFlutter:(NSNumber *)sentTimestampFromFlutter;
 @property(nonatomic, strong) NSNumber * textureId;
+@property(nonatomic, strong) NSNumber * sentTimestampFromFlutter;
 @end
 
 @interface FLTLoopingMessage : NSObject
@@ -75,15 +79,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FLTCreateMessage : NSObject
 /// `init` unavailable to enforce nonnull fields, see the `make` class method.
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)makeWithAsset:(nullable NSString *)asset
-    uri:(nullable NSString *)uri
-    packageName:(nullable NSString *)packageName
-    formatHint:(nullable NSString *)formatHint
++ (instancetype)makeWithAsset:(NSString *)asset
+    uri:(NSString *)uri
+    packageName:(NSString *)packageName
+    formatHint:(NSString *)formatHint
     httpHeaders:(NSDictionary<NSString *, NSString *> *)httpHeaders;
-@property(nonatomic, copy, nullable) NSString * asset;
-@property(nonatomic, copy, nullable) NSString * uri;
-@property(nonatomic, copy, nullable) NSString * packageName;
-@property(nonatomic, copy, nullable) NSString * formatHint;
+@property(nonatomic, copy) NSString * asset;
+@property(nonatomic, copy) NSString * uri;
+@property(nonatomic, copy) NSString * packageName;
+@property(nonatomic, copy) NSString * formatHint;
 @property(nonatomic, strong) NSDictionary<NSString *, NSString *> * httpHeaders;
 @end
 

@@ -44,6 +44,8 @@
 @property(nonatomic, readonly) BOOL isPlaying;
 @property(nonatomic) BOOL isLooping;
 @property(nonatomic, readonly) BOOL isInitialized;
+// Ha olyan esemény érkezik, aminek a timestamp-je kisebb, mint ez a timestamp
+// akkor az event ignorálva lesz, hiszen azt az eseményt a kliens később küldte
 @property(nonatomic) void (^autoPauseHappen)(NSNumber *pausedPosition);
 - (instancetype)initWithURL:(NSURL *)url
                frameUpdater:(FLTFrameUpdater *)frameUpdater
@@ -557,6 +559,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 @property(readonly, weak, nonatomic) NSObject<FlutterTextureRegistry> *registry;
 @property(readonly, weak, nonatomic) NSObject<FlutterBinaryMessenger> *messenger;
 @property(nonatomic) FLTVideoPlayerFlutterApi *hostToFlutterApi;
+@property(nonatomic) NSNumber* lastPlayPauseEventTimestamp;
 @property(readonly, strong, nonatomic)
     NSMutableDictionary<NSNumber *, FLTVideoPlayer *> *playersByTextureId;
 @property(readonly, strong, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
@@ -613,7 +616,12 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   [eventChannel setStreamHandler:player];
   player.eventChannel = eventChannel;
   self.playersByTextureId[@(textureId)] = player;
-  FLTTextureMessage *result = [FLTTextureMessage makeWithTextureId:@(textureId)];
+    
+    NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
+    // NSTimeInterval is defined as double
+    NSNumber *timeStampObj = [NSNumber numberWithDouble: timeStamp];
+    
+  FLTTextureMessage *result = [FLTTextureMessage makeWithTextureId:@(textureId) sentTimestampFromFlutter:timeStampObj];
   return result;
 }
 
@@ -650,7 +658,16 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                                     frameUpdater:frameUpdater
                                      httpHeaders:input.httpHeaders
                 autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
+        
+        NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
+        // NSTimeInterval is defined as double
+        NSNumber *timeStampObj = [NSNumber numberWithDouble: timeStamp];
+        
+        _lastPlayPauseEventTimestamp = timeStampObj;
+        
+        
         FLTPositionMessage *msg = [FLTPositionMessage makeWithTextureId: [NSNumber numberWithLong:frameUpdater.textureId] position: pausedPosition];
+        
         
         [self->_hostToFlutterApi autoPauseHappenMsg:msg completion:^(NSError * _Nullable) {
             NSLog(@"(NATIVE) Auto pause event sent to flutter ");
@@ -702,6 +719,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)play:(FLTTextureMessage *)input error:(FlutterError **)error {
+    NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
+    if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
+        NSLog(@"Older message ignored");
+        return;
+    }
+    
+    _lastPlayPauseEventTimestamp = [eventTimestamp copy];
+    
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
   [player play];
 }
@@ -720,6 +745,14 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)pause:(FLTTextureMessage *)input error:(FlutterError **)error {
+    NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
+    if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
+        NSLog(@"Older message ignored");
+        return;
+    }
+
+    _lastPlayPauseEventTimestamp = [eventTimestamp copy];
+    
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
   [player pause];
 }

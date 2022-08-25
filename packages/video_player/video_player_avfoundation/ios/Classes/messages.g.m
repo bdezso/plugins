@@ -69,10 +69,12 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 
 @implementation FLTPausePointsMessage
 + (instancetype)makeWithTextureId:(NSNumber *)textureId
-    pausePointsMs:(NSArray<NSNumber *> *)pausePointsMs {
+    pausePointsMs:(NSArray<NSNumber *> *)pausePointsMs
+    sentTimestampFromFlutter:(NSNumber *)sentTimestampFromFlutter {
   FLTPausePointsMessage* pigeonResult = [[FLTPausePointsMessage alloc] init];
   pigeonResult.textureId = textureId;
   pigeonResult.pausePointsMs = pausePointsMs;
+  pigeonResult.sentTimestampFromFlutter = sentTimestampFromFlutter;
   return pigeonResult;
 }
 + (FLTPausePointsMessage *)fromMap:(NSDictionary *)dict {
@@ -81,27 +83,33 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
   NSAssert(pigeonResult.textureId != nil, @"");
   pigeonResult.pausePointsMs = GetNullableObject(dict, @"pausePointsMs");
   NSAssert(pigeonResult.pausePointsMs != nil, @"");
+  pigeonResult.sentTimestampFromFlutter = GetNullableObject(dict, @"sentTimestampFromFlutter");
+  NSAssert(pigeonResult.sentTimestampFromFlutter != nil, @"");
   return pigeonResult;
 }
 - (NSDictionary *)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.textureId ? self.textureId : [NSNull null]), @"textureId", (self.pausePointsMs ? self.pausePointsMs : [NSNull null]), @"pausePointsMs", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.textureId ? self.textureId : [NSNull null]), @"textureId", (self.pausePointsMs ? self.pausePointsMs : [NSNull null]), @"pausePointsMs", (self.sentTimestampFromFlutter ? self.sentTimestampFromFlutter : [NSNull null]), @"sentTimestampFromFlutter", nil];
 }
 @end
 
 @implementation FLTTextureMessage
-+ (instancetype)makeWithTextureId:(NSNumber *)textureId {
++ (instancetype)makeWithTextureId:(NSNumber *)textureId
+    sentTimestampFromFlutter:(NSNumber *)sentTimestampFromFlutter {
   FLTTextureMessage* pigeonResult = [[FLTTextureMessage alloc] init];
   pigeonResult.textureId = textureId;
+  pigeonResult.sentTimestampFromFlutter = sentTimestampFromFlutter;
   return pigeonResult;
 }
 + (FLTTextureMessage *)fromMap:(NSDictionary *)dict {
   FLTTextureMessage *pigeonResult = [[FLTTextureMessage alloc] init];
   pigeonResult.textureId = GetNullableObject(dict, @"textureId");
   NSAssert(pigeonResult.textureId != nil, @"");
+  pigeonResult.sentTimestampFromFlutter = GetNullableObject(dict, @"sentTimestampFromFlutter");
+  NSAssert(pigeonResult.sentTimestampFromFlutter != nil, @"");
   return pigeonResult;
 }
 - (NSDictionary *)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.textureId ? self.textureId : [NSNull null]), @"textureId", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.textureId ? self.textureId : [NSNull null]), @"textureId", (self.sentTimestampFromFlutter ? self.sentTimestampFromFlutter : [NSNull null]), @"sentTimestampFromFlutter", nil];
 }
 @end
 
@@ -190,10 +198,10 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 @end
 
 @implementation FLTCreateMessage
-+ (instancetype)makeWithAsset:(nullable NSString *)asset
-    uri:(nullable NSString *)uri
-    packageName:(nullable NSString *)packageName
-    formatHint:(nullable NSString *)formatHint
++ (instancetype)makeWithAsset:(NSString *)asset
+    uri:(NSString *)uri
+    packageName:(NSString *)packageName
+    formatHint:(NSString *)formatHint
     httpHeaders:(NSDictionary<NSString *, NSString *> *)httpHeaders {
   FLTCreateMessage* pigeonResult = [[FLTCreateMessage alloc] init];
   pigeonResult.asset = asset;
@@ -206,9 +214,13 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 + (FLTCreateMessage *)fromMap:(NSDictionary *)dict {
   FLTCreateMessage *pigeonResult = [[FLTCreateMessage alloc] init];
   pigeonResult.asset = GetNullableObject(dict, @"asset");
+  NSAssert(pigeonResult.asset != nil, @"");
   pigeonResult.uri = GetNullableObject(dict, @"uri");
+  NSAssert(pigeonResult.uri != nil, @"");
   pigeonResult.packageName = GetNullableObject(dict, @"packageName");
+  NSAssert(pigeonResult.packageName != nil, @"");
   pigeonResult.formatHint = GetNullableObject(dict, @"formatHint");
+  NSAssert(pigeonResult.formatHint != nil, @"");
   pigeonResult.httpHeaders = GetNullableObject(dict, @"httpHeaders");
   NSAssert(pigeonResult.httpHeaders != nil, @"");
   return pigeonResult;

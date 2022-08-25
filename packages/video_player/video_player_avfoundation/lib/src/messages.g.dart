@@ -15,15 +15,18 @@ class PausePointsMessage {
   PausePointsMessage({
     required this.textureId,
     required this.pausePointsMs,
+    required this.sentTimestampFromFlutter,
   });
 
   int textureId;
   List<int?> pausePointsMs;
+  int sentTimestampFromFlutter;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
     pigeonMap['textureId'] = textureId;
     pigeonMap['pausePointsMs'] = pausePointsMs;
+    pigeonMap['sentTimestampFromFlutter'] = sentTimestampFromFlutter;
     return pigeonMap;
   }
 
@@ -32,6 +35,7 @@ class PausePointsMessage {
     return PausePointsMessage(
       textureId: pigeonMap['textureId']! as int,
       pausePointsMs: (pigeonMap['pausePointsMs'] as List<Object?>?)!.cast<int?>(),
+      sentTimestampFromFlutter: pigeonMap['sentTimestampFromFlutter']! as int,
     );
   }
 }
@@ -39,13 +43,16 @@ class PausePointsMessage {
 class TextureMessage {
   TextureMessage({
     required this.textureId,
+    required this.sentTimestampFromFlutter,
   });
 
   int textureId;
+  int sentTimestampFromFlutter;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
     pigeonMap['textureId'] = textureId;
+    pigeonMap['sentTimestampFromFlutter'] = sentTimestampFromFlutter;
     return pigeonMap;
   }
 
@@ -53,6 +60,7 @@ class TextureMessage {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return TextureMessage(
       textureId: pigeonMap['textureId']! as int,
+      sentTimestampFromFlutter: pigeonMap['sentTimestampFromFlutter']! as int,
     );
   }
 }
@@ -159,17 +167,17 @@ class PositionMessage {
 
 class CreateMessage {
   CreateMessage({
-    this.asset,
-    this.uri,
-    this.packageName,
-    this.formatHint,
+    required this.asset,
+    required this.uri,
+    required this.packageName,
+    required this.formatHint,
     required this.httpHeaders,
   });
 
-  String? asset;
-  String? uri;
-  String? packageName;
-  String? formatHint;
+  String asset;
+  String uri;
+  String packageName;
+  String formatHint;
   Map<String?, String?> httpHeaders;
 
   Object encode() {
@@ -185,10 +193,10 @@ class CreateMessage {
   static CreateMessage decode(Object message) {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return CreateMessage(
-      asset: pigeonMap['asset'] as String?,
-      uri: pigeonMap['uri'] as String?,
-      packageName: pigeonMap['packageName'] as String?,
-      formatHint: pigeonMap['formatHint'] as String?,
+      asset: pigeonMap['asset']! as String,
+      uri: pigeonMap['uri']! as String,
+      packageName: pigeonMap['packageName']! as String,
+      formatHint: pigeonMap['formatHint']! as String,
       httpHeaders: (pigeonMap['httpHeaders'] as Map<Object?, Object?>?)!.cast<String?, String?>(),
     );
   }
