@@ -721,11 +721,11 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 - (void)play:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
     
-    NSLog(@"%lld", [eventTimestamp longLongValue] );
-    NSLog(@"%lld", [_lastPlayPauseEventTimestamp longLongValue] );
+    NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
+    NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
 
     if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
-        NSLog(@"Older message ignored");
+        NSLog(@"Older message ignored play");
         return;
     }
     
@@ -750,8 +750,13 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
 - (void)pause:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
-    if([eventTimestamp longValue] < [_lastPlayPauseEventTimestamp longValue]){
-        NSLog(@"Older message ignored");
+    
+    NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
+    NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
+
+    
+    if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
+        NSLog(@"Older message ignored pause");
         return;
     }
 
