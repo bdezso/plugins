@@ -4,8 +4,6 @@
 
 import 'package:pigeon/pigeon_lib.dart';
 
-
-// bdezso
 class PausePointsMessage {
   int textureId;
   List<int?> pausePointsMs;
@@ -64,17 +62,17 @@ class PositionMessage {
 }
 
 class CreateMessage {
-  String asset;
-  String uri;
-  String packageName;
-  String formatHint;
-  Map<String, String> httpHeaders;
+  String? asset;
+  String? uri;
+  String? packageName;
+  String? formatHint;
+  Map<String?, String?>? httpHeaders;
   CreateMessage({
-    required this.asset,
-    required this.uri,
-    required this.packageName,
-    required this.formatHint,
-    required this.httpHeaders,
+    this.asset,
+    this.uri,
+    this.packageName,
+    this.formatHint,
+    this.httpHeaders,
   });
 }
 
@@ -84,6 +82,7 @@ class MixWithOthersMessage {
     required this.mixWithOthers,
   });
 }
+
 
 @HostApi(dartHostTestHandler: 'TestHostVideoPlayerApi')
 abstract class VideoPlayerApi {
