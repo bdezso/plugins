@@ -97,17 +97,11 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         // Possible out of sync
         [_player pause];
         
-        
-        NSLog(@"lots of paused called lol");
         CMTimeShow(_player.currentTime);
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         
-        
-        NSLog(@"Stop happening on boundary player callback");
-        
         if(weakSelf.autoPauseHappen != NULL){
-            NSLog(@"Lets call autoPauseHappen callback");
             weakSelf.autoPauseHappen([NSNumber numberWithLong:[weakSelf position]] );
         }
     }];
@@ -368,7 +362,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     return;
   }
   if (_isPlaying) {
-      NSLog(@"PLAY CALLED (NATIVE CODE)");
+      NSLog(@"(NATIVE) updatePlayingState: call _playar.play() ");
     [_player play];
   } else {
     [_player pause];
@@ -428,13 +422,13 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (void)play {
-    NSLog(@"Start the video playback (NATIVE CODE)");
+    NSLog(@"(NATIVE)  FLTVideoPlayer.play() called");
   _isPlaying = YES;
   [self updatePlayingState];
 }
 
 - (void)pause {
-    NSLog(@"Stop the video playback (NATIVE CODE)");
+    NSLog(@"(NATIVE) FLTVideoPlayer.stop() called");
   _isPlaying = NO;
   [self updatePlayingState];
 }
@@ -564,7 +558,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   FLTVideoPlayerPlugin *instance = [[FLTVideoPlayerPlugin alloc] initWithRegistrar:registrar];
   [registrar publish:instance];
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
-  NSLog(@"🔥 🔥 🔥Some registration happening, custom video player fork  ios...");
+  NSLog(@"🔥 🔥 🔥Some registration happening, custom video player fork  ios... (NATIVE)");
 }
 
 
@@ -590,7 +584,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 // bdezso
 // a plugin-hez hozzáadjuk a message kezelését
 - (void)setPausePoints:(FLTPausePointsMessage *)input error:(FlutterError * _Nullable __autoreleasing *)error{
-    NSLog(@"Pause points receive native side");
+    NSLog(@"(NATIVE) Pause points receive native side");
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
     [player setPausePoints:input.pausePointsMs];
   
@@ -647,11 +641,10 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                                     frameUpdater:frameUpdater
                                      httpHeaders:input.httpHeaders
                 autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
-        NSLog(@"inside callback");
         FLTPositionMessage *msg = [FLTPositionMessage makeWithTextureId: [NSNumber numberWithLong:frameUpdater.textureId] position: pausedPosition];
         
         [self->_hostToFlutterApi autoPauseHappenMsg:msg completion:^(NSError * _Nullable) {
-            NSLog(@"hostToFlutterApi completion called");
+            NSLog(@"(NATIVE) Auto pause event sent to flutter ");
         } ];
                 }];
     return [self onPlayerSetup:player frameUpdater:frameUpdater];
