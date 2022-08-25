@@ -468,6 +468,9 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
     if(_player.rate == 0){
         NSLog(@"(NATIVE) Try to change playback speed when video is pausing. This is not allowed");
         return;
+    }else{
+        NSLog(@"player.rate is ok");
+        NSLog(@"%f", _player.rate);
     }
     
 
