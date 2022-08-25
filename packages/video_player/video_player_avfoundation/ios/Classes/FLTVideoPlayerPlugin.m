@@ -466,7 +466,7 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
   // Ha a videó meg van állítva, akkor ne lehessen playback speed-et állítnai
   // hiszen ez esetben a videó elindulna magától!
     if(_player.rate != 0){
-        NSLog("(NATIVE) Try to change playback speed when video is running. This is not allowed");
+        NSLog(@"(NATIVE) Try to change playback speed when video is running. This is not allowed");
         return;
     }
     
