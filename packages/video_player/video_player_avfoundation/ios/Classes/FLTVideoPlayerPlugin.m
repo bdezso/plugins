@@ -84,7 +84,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         Float64 seconds = ((Float64)msAsInt) / 1000;
         
     
-        CMTime time = CMTimeMakeWithSeconds(seconds, 600);
+        CMTime time = CMTimeMakeWithSeconds(seconds, _player.currentItem.duration.timescale);
         
         [times addObject: [NSValue valueWithCMTime:time]];
     }
