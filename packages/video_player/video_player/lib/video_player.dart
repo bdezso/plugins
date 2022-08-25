@@ -22,14 +22,14 @@ export 'src/closed_caption_file.dart';
 VideoPlayerPlatform? _lastVideoPlayerPlatform;
 
 VideoPlayerPlatform get _videoPlayerPlatform {
-  final VideoPlayerPlatform currentInstance = VideoPlayerPlatform.instance;
+  final VideoPlayerPlatform? currentInstance = VideoPlayerPlatform.instance;
   if (_lastVideoPlayerPlatform != currentInstance) {
     // This will clear all open videos on the platform when a full restart is
     // performed.
-    currentInstance.init();
+    currentInstance?.init();
     _lastVideoPlayerPlatform = currentInstance;
   }
-  return currentInstance;
+  return currentInstance!;
 }
 
 /// The duration, current position, buffering state, error state and settings
