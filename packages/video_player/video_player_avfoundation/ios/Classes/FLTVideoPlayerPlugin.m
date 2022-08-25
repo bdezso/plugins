@@ -97,7 +97,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         // Possible out of sync
         [_player pause];
         
-        [_player seekToTime:_player.currentTime]
+        [_player seekToTime:_player.currentTime];
         NSLog(@"lots of paused called lol");
         CMTimeShow(_player.currentTime);
         
