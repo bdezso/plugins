@@ -482,6 +482,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   void _addAutoPauseListener(){
     _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(textureId).listen((event) {
       this.value = this.value.copyWith(isPlaying: false);
+      print("isPlaying set to false");
     });
   }
 
