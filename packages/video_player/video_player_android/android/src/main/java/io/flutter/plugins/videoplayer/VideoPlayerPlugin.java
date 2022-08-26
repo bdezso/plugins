@@ -131,6 +131,9 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   // VideoPlayer ezt hívja meg, ha auto pause történt
   public void autoPauseCallback(Long textureId, Long ms){
     if(this.hostToFlutterApi != null){
+      VideoPlayer player = videoPlayers.get(textureId);
+      player.pause();
+
       this.hostToFlutterApi.autoPauseHappen(new PositionMessage.Builder()
               .setPosition(ms)
               .setTextureId(textureId)
