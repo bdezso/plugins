@@ -123,8 +123,11 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   }
 
   // VideoPlayer ezt hívja meg, ha auto pause történt
-  public void autoPauseCallback(Integer ms){
-
+  public void autoPauseCallback(Long textureId, Long ms){
+    this.hostToFlutterApi.autoPauseHappen(new PositionMessage.Builder()
+            .setPosition(ms)
+            .setTextureId(textureId)
+            .build(), (Void t) -> {});
   }
 
   public TextureMessage create(CreateMessage arg) {
@@ -135,8 +138,6 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
             flutterState.binaryMessenger, "flutter.io/videoPlayer/videoEvents" + handle.id());
 
     VideoPlayer player;
-
-
 
     if (arg.getAsset() != null) {
       String assetLookupKey;
@@ -155,8 +156,8 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
               null,
               null,
               options,
-                  (Integer ms) -> {
-                this.autoPauseCallback(ms);
+                  (Long ms) -> {
+                this.autoPauseCallback(handle.id(),ms);
                     return null;
                   }
           );
@@ -172,8 +173,8 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
               arg.getFormatHint(),
               httpHeaders,
               options,
-                  (Integer ms) -> {
-                    this.autoPauseCallback(ms);
+                  (Long ms) -> {
+                    this.autoPauseCallback(handle.id(),ms);
                     return null;
                   });
     }

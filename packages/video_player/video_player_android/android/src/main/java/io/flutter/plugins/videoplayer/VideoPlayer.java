@@ -67,7 +67,7 @@ final class VideoPlayer {
 
   private final VideoPlayerOptions options;
 
-  private Function<Integer,Void> autoPauseHappen;
+  private Function<Long,Void> autoPauseHappen;
 
   VideoPlayer(
       Context context,
@@ -77,7 +77,7 @@ final class VideoPlayer {
       String formatHint,
       @NonNull Map<String, String> httpHeaders,
       VideoPlayerOptions options,
-      Function<Integer,Void> autoPauseCallback
+      Function<Long,Void> autoPauseCallback
       ) {
     this.eventChannel = eventChannel;
     this.textureEntry = textureEntry;
@@ -264,9 +264,9 @@ final class VideoPlayer {
   }
 
   @RequiresApi(api = Build.VERSION_CODES.N)
-  void setPausePoints(List<Integer> pausePointsMs){
+  void setPausePoints(List<Long> pausePointsMs){
     for(int i=0;i<pausePointsMs.size();i++){
-      Integer ms = pausePointsMs.get(i);
+      Long ms = pausePointsMs.get(i);
       exoPlayer
               .createMessage(
                       (messageType, payload) -> {
