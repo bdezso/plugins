@@ -18,7 +18,7 @@ class PausePointsMessage {
   });
 
   int textureId;
-  List<int?> pausePointsMs;
+  Int64List pausePointsMs;
   int sentTimestampFromFlutter;
 
   Object encode() {
@@ -33,7 +33,7 @@ class PausePointsMessage {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return PausePointsMessage(
       textureId: pigeonMap['textureId']! as int,
-      pausePointsMs: (pigeonMap['pausePointsMs'] as List<Object?>?)!.cast<int?>(),
+      pausePointsMs: pigeonMap['pausePointsMs']! as Int64List,
       sentTimestampFromFlutter: pigeonMap['sentTimestampFromFlutter']! as int,
     );
   }

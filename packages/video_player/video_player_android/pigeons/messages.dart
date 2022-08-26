@@ -15,7 +15,7 @@ import 'package:pigeon/pigeon.dart';
 ))
 class PausePointsMessage {
   int textureId;
-  List<int?> pausePointsMs;
+  Int64List pausePointsMs;
   int sentTimestampFromFlutter;
   PausePointsMessage({
     required this.textureId,

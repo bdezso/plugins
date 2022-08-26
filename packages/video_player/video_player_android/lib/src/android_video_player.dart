@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -60,7 +61,7 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<void> setPausePoints(int textureId, List<int> pausePoints ){
     print('Pause points called (android_video_player.dart)');
-    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints,sentTimestampFromFlutter: getCurrentTimestamp()));
+    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: Int64List.fromList(pausePoints),sentTimestampFromFlutter: getCurrentTimestamp()));
   }
   
 

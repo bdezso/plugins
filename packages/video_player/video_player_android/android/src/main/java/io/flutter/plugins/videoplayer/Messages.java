@@ -36,9 +36,9 @@ public class Messages {
       this.textureId = setterArg;
     }
 
-    private @NonNull List<Long> pausePointsMs;
-    public @NonNull List<Long> getPausePointsMs() { return pausePointsMs; }
-    public void setPausePointsMs(@NonNull List<Long> setterArg) {
+    private @NonNull long[] pausePointsMs;
+    public @NonNull long[] getPausePointsMs() { return pausePointsMs; }
+    public void setPausePointsMs(@NonNull long[] setterArg) {
       if (setterArg == null) {
         throw new IllegalStateException("Nonnull field \"pausePointsMs\" is null.");
       }
@@ -62,8 +62,8 @@ public class Messages {
         this.textureId = setterArg;
         return this;
       }
-      private @Nullable List<Long> pausePointsMs;
-      public @NonNull Builder setPausePointsMs(@NonNull List<Long> setterArg) {
+      private @Nullable long[] pausePointsMs;
+      public @NonNull Builder setPausePointsMs(@NonNull long[] setterArg) {
         this.pausePointsMs = setterArg;
         return this;
       }
@@ -92,7 +92,7 @@ public class Messages {
       Object textureId = map.get("textureId");
       pigeonResult.setTextureId((textureId == null) ? null : ((textureId instanceof Integer) ? (Integer)textureId : (Long)textureId));
       Object pausePointsMs = map.get("pausePointsMs");
-      pigeonResult.setPausePointsMs((List<Long>)pausePointsMs);
+      pigeonResult.setPausePointsMs((long[])pausePointsMs);
       Object sentTimestampFromFlutter = map.get("sentTimestampFromFlutter");
       pigeonResult.setSentTimestampFromFlutter((sentTimestampFromFlutter == null) ? null : ((sentTimestampFromFlutter instanceof Integer) ? (Integer)sentTimestampFromFlutter : (Long)sentTimestampFromFlutter));
       return pigeonResult;
