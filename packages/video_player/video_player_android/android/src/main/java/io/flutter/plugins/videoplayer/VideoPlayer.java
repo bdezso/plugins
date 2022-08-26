@@ -275,7 +275,7 @@ final class VideoPlayer {
                       })
               .setLooper(Looper.getMainLooper())
               .setPayload(ms)
-              .setPosition( 0, 120_000)
+              .setPosition( 0, ms)
               .setDeleteAfterDelivery(false)
               .send();
     }
