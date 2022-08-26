@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.LongSparseArray;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import io.flutter.FlutterInjector;
 import io.flutter.Log;
@@ -26,6 +27,8 @@ import io.flutter.plugins.videoplayer.Messages.VolumeMessage;
 import io.flutter.view.TextureRegistry;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -130,6 +133,7 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
             .build(), (Void t) -> {});
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.O)
   public TextureMessage create(CreateMessage arg) {
     TextureRegistry.SurfaceTextureEntry handle =
         flutterState.textureRegistry.createSurfaceTexture();
@@ -180,7 +184,8 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
     }
     videoPlayers.put(handle.id(), player);
 
-    TextureMessage result = new TextureMessage.Builder().setTextureId(handle.id()).build();
+    Long currentTime =  (Instant.now().toEpochMilli());
+    TextureMessage result = new TextureMessage.Builder().setTextureId(handle.id()).setSentTimestampFromFlutter(currentTime).build();
     return result;
   }
 
