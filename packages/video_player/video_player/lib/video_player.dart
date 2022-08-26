@@ -485,7 +485,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     _videoPlayerPlatform.getAutoPauseHappenStreamForTextureId(_textureId).listen((event) {
       this.value = this.value.copyWith(isPlaying: false);
-      print("isPlaying set to false (addAutoPauseLIStener in video_player.dart)");
+      print("isPlaying set to false (inside autoPauseHappen callback on flutter side)");
     });
   }
 
