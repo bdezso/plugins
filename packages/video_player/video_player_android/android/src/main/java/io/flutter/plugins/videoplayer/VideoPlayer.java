@@ -264,9 +264,9 @@ final class VideoPlayer {
   }
 
   @RequiresApi(api = Build.VERSION_CODES.N)
-  void setPausePoints(List<Long> pausePointsMs){
-    for(int i=0;i<pausePointsMs.size();i++){
-      Long ms = pausePointsMs.get(i);
+  void setPausePoints(long[] pausePointsMs){
+    for(int i=0;i<pausePointsMs.length;i++){
+      Long ms = pausePointsMs[i];
       exoPlayer
               .createMessage(
                       (messageType, payload) -> {
