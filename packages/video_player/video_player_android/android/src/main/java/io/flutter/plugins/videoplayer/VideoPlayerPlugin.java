@@ -244,7 +244,7 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   @Override
   public void setPausePoints(@NonNull Messages.PausePointsMessage msg) {
     VideoPlayer player = videoPlayers.get(msg.getTextureId());
-
+    player.setPausePoints(msg.getPausePointsMs());
   }
 
   private interface KeyForAssetFn {
