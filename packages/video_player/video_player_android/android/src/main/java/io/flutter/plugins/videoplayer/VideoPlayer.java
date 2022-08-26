@@ -9,8 +9,11 @@ import static com.google.android.exoplayer2.Player.REPEAT_MODE_OFF;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Looper;
 import android.view.Surface;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -32,6 +35,8 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+
+import io.flutter.Log;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.view.TextureRegistry;
 import java.util.Arrays;
@@ -39,6 +44,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+
 
 final class VideoPlayer {
   private static final String FORMAT_SS = "ss";
@@ -60,6 +67,8 @@ final class VideoPlayer {
 
   private final VideoPlayerOptions options;
 
+  private Function<Integer,Void> autoPauseHappen;
+
   VideoPlayer(
       Context context,
       EventChannel eventChannel,
@@ -67,10 +76,14 @@ final class VideoPlayer {
       String dataSource,
       String formatHint,
       @NonNull Map<String, String> httpHeaders,
-      VideoPlayerOptions options) {
+      VideoPlayerOptions options,
+      Function<Integer,Void> autoPauseCallback
+      ) {
     this.eventChannel = eventChannel;
     this.textureEntry = textureEntry;
     this.options = options;
+    this.autoPauseHappen = autoPauseCallback;
+
 
     ExoPlayer exoPlayer = new ExoPlayer.Builder(context).build();
 
@@ -248,6 +261,24 @@ final class VideoPlayer {
     exoPlayer.setAudioAttributes(
         new AudioAttributes.Builder().setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(),
         !isMixMode);
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.N)
+  void setPausePoints(List<Integer> pausePointsMs){
+    for(int i=0;i<pausePointsMs.size();i++){
+      Integer ms = pausePointsMs.get(i);
+      exoPlayer
+              .createMessage(
+                      (messageType, payload) -> {
+                        Log.d("TAG", "Auto pause happen");
+                        this.autoPauseHappen.apply(ms);
+                      })
+              .setLooper(Looper.getMainLooper())
+              .setPayload(ms)
+              .setPosition( 0, 120_000)
+              .setDeleteAfterDelivery(false)
+              .send();
+    }
   }
 
   void play() {

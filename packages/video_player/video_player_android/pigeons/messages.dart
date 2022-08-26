@@ -13,47 +13,83 @@ import 'package:pigeon/pigeon.dart';
   ),
   copyrightHeader: 'pigeons/copyright.txt',
 ))
-class TextureMessage {
-  TextureMessage(this.textureId);
+class PausePointsMessage {
   int textureId;
+  List<int?> pausePointsMs;
+  int sentTimestampFromFlutter;
+  PausePointsMessage({
+    required this.textureId,
+    required this.pausePointsMs,
+    required this.sentTimestampFromFlutter
+  });
 }
 
+class TextureMessage {
+  int textureId;
+  int sentTimestampFromFlutter;
+  TextureMessage({
+    required this.textureId,
+    required this.sentTimestampFromFlutter
+  });
+}
+
+
 class LoopingMessage {
-  LoopingMessage(this.textureId, this.isLooping);
   int textureId;
   bool isLooping;
+  LoopingMessage({
+    required this.textureId,
+    required this.isLooping,
+  });
 }
 
 class VolumeMessage {
-  VolumeMessage(this.textureId, this.volume);
   int textureId;
   double volume;
+  VolumeMessage({
+    required this.textureId,
+    required this.volume,
+  });
 }
 
 class PlaybackSpeedMessage {
-  PlaybackSpeedMessage(this.textureId, this.speed);
   int textureId;
   double speed;
+  PlaybackSpeedMessage({
+    required this.textureId,
+    required this.speed,
+  });
 }
 
 class PositionMessage {
-  PositionMessage(this.textureId, this.position);
   int textureId;
   int position;
+  PositionMessage({
+    required this.textureId,
+    required this.position,
+  });
 }
 
 class CreateMessage {
-  CreateMessage({required this.httpHeaders});
   String? asset;
   String? uri;
   String? packageName;
   String? formatHint;
-  Map<String?, String?> httpHeaders;
+  Map<String?, String?>? httpHeaders;
+  CreateMessage({
+    this.asset,
+    this.uri,
+    this.packageName,
+    this.formatHint,
+    this.httpHeaders,
+  });
 }
 
 class MixWithOthersMessage {
-  MixWithOthersMessage(this.mixWithOthers);
   bool mixWithOthers;
+  MixWithOthersMessage({
+    required this.mixWithOthers,
+  });
 }
 
 @HostApi(dartHostTestHandler: 'TestHostVideoPlayerApi')
@@ -69,4 +105,12 @@ abstract class AndroidVideoPlayerApi {
   void seekTo(PositionMessage msg);
   void pause(TextureMessage msg);
   void setMixWithOthers(MixWithOthersMessage msg);
+  void setPausePoints(PausePointsMessage msg); // bdezso
 }
+
+@FlutterApi()
+abstract class VideoPlayerFlutterApi {
+  // setPausePoints által egy auto megállítás történt
+  void autoPauseHappen(PositionMessage msg);
+}
+

@@ -295,15 +295,6 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
   [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ] completionHandler:assetCompletionHandler];
     
-    NSMutableArray *array = [NSMutableArray array];
-    
-    [array addObject:[NSNumber numberWithInt:1000]];
-    [array addObject:[NSNumber numberWithInt:2000]];
-    [array addObject:[NSNumber numberWithInt:3000]];
-
-    // for test only
-    //[self setPausePoints: array];
-
   return self;
 }
 
@@ -765,6 +756,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 
     
     if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
+        // TODO: Nem volt sok értelme, mivel FIFO sort használ a MethodChannel
+        // tehát maga a flutter garantálja az üzenetek sorrendjét
         NSLog(@"Older message ignored pause");
         return;
     }

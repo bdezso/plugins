@@ -6,28 +6,67 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-
+import 'package:video_player_platform_interface/messages.g.dart' as interface_messages;
 import 'messages.g.dart';
+
+/// Implementation of  host -> flutter communication
+class VideoPlayerFlutterApiImpl extends VideoPlayerFlutterApi{
+  /// notify when host pause the video because of break points which was set by setPausePoints
+  final BehaviorSubject<PositionMessage> _autoPauseHappenNotifier = BehaviorSubject<PositionMessage>();
+
+  // Ez akkor hívódik meg, amikor a host üzenetet küld számunkra
+  @override
+  void autoPauseHappen(PositionMessage arg) {
+    _autoPauseHappenNotifier.add(arg);
+  }
+
+  // stream
+  Stream<PositionMessage> getAutoPauseStream(int textureId){
+    return _autoPauseHappenNotifier.stream.where((PositionMessage event) => event.textureId == textureId);
+  }
+}
+
 
 /// An Android implementation of [VideoPlayerPlatform] that uses the
 /// Pigeon-generated [VideoPlayerApi].
 class AndroidVideoPlayer extends VideoPlayerPlatform {
   final AndroidVideoPlayerApi _api = AndroidVideoPlayerApi();
+  final VideoPlayerFlutterApiImpl _hostToFlutterApi = VideoPlayerFlutterApiImpl();
 
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
     VideoPlayerPlatform.instance = AndroidVideoPlayer();
   }
 
-  @override
-  Future<void> init() {
-    return _api.initialize();
+
+  int getCurrentTimestamp(){
+    return DateTime.now().microsecondsSinceEpoch;
   }
 
   @override
+  Future<void> init() {
+    VideoPlayerFlutterApi.setup(_hostToFlutterApi);
+    return _api.initialize();
+  }
+
+
+  @override 
+  Stream<interface_messages.PositionMessage> getAutoPauseHappenStreamForTextureId(int textureId){
+    return _hostToFlutterApi.getAutoPauseStream(textureId).map((event) => interface_messages.PositionMessage()..position = event.position..textureId=event.textureId);
+  }
+
+  @override
+  Future<void> setPausePoints(int textureId, List<int> pausePoints ){
+    print('Pause points called (android_video_player.dart)');
+    return _api.setPausePoints(PausePointsMessage(textureId: textureId,pausePointsMs: pausePoints,sentTimestampFromFlutter: getCurrentTimestamp()));
+  }
+  
+
+  @override
   Future<void> dispose(int textureId) {
-    return _api.dispose(TextureMessage(textureId: textureId));
+    return _api.dispose(TextureMessage(textureId: textureId, sentTimestampFromFlutter: DateTime.now().millisecondsSinceEpoch));
   }
 
   @override
@@ -76,12 +115,12 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> play(int textureId) {
-    return _api.play(TextureMessage(textureId: textureId));
+    return _api.play(TextureMessage(textureId: textureId,sentTimestampFromFlutter: DateTime.now().millisecondsSinceEpoch));
   }
 
   @override
   Future<void> pause(int textureId) {
-    return _api.pause(TextureMessage(textureId: textureId));
+    return _api.pause(TextureMessage(textureId: textureId,sentTimestampFromFlutter: DateTime.now().millisecondsSinceEpoch));
   }
 
   @override
@@ -113,7 +152,7 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<Duration> getPosition(int textureId) async {
     final PositionMessage response =
-        await _api.position(TextureMessage(textureId: textureId));
+        await _api.position(TextureMessage(textureId: textureId,sentTimestampFromFlutter: DateTime.now().millisecondsSinceEpoch));
     return Duration(milliseconds: response.position);
   }
 
