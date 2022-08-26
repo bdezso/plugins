@@ -46,6 +46,9 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
 
   @SuppressWarnings("deprecation")
   private VideoPlayerPlugin(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
+    this.hostToFlutterApi = new Messages.VideoPlayerFlutterApi(registrar.messenger());
+    Log.d("VideoPlayer", "hosttoFlutterApi inited");
+
     this.flutterState =
         new FlutterState(
             registrar.context(),
@@ -54,7 +57,6 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
             registrar::lookupKeyForAsset,
             registrar.textures());
     flutterState.startListening(this, registrar.messenger());
-    this.hostToFlutterApi = new Messages.VideoPlayerFlutterApi(registrar.messenger());
   }
 
   /** Registers this with the stable v1 embedding. Will not respond to lifecycle events. */
