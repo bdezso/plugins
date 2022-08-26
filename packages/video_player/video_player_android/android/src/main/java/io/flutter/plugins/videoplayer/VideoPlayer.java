@@ -267,6 +267,7 @@ final class VideoPlayer {
   void setPausePoints(long[] pausePointsMs){
     for(int i=0;i<pausePointsMs.length;i++){
       Long ms = pausePointsMs[i];
+
       exoPlayer
               .createMessage(
                       (messageType, payload) -> {
@@ -286,6 +287,7 @@ final class VideoPlayer {
   }
 
   void pause() {
+    exoPlayer.pause();
     exoPlayer.setPlayWhenReady(false);
   }
 
