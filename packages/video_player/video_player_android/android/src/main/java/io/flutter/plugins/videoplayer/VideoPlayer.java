@@ -287,7 +287,6 @@ final class VideoPlayer {
   }
 
   void pause() {
-    exoPlayer.pause();
     exoPlayer.setPlayWhenReady(false);
   }
 
