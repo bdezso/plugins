@@ -38,17 +38,15 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   private final LongSparseArray<VideoPlayer> videoPlayers = new LongSparseArray<>();
   private FlutterState flutterState;
   private VideoPlayerOptions options = new VideoPlayerOptions();
-  private Messages.VideoPlayerFlutterApi hostToFlutterApi;
+  private static Messages.VideoPlayerFlutterApi hostToFlutterApi;
 
 
   /** Register this with the v2 embedding for the plugin to respond to lifecycle callbacks. */
-  public VideoPlayerPlugin() {}
+  public VideoPlayerPlugin() {
+  }
 
   @SuppressWarnings("deprecation")
   private VideoPlayerPlugin(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
-    this.hostToFlutterApi = new Messages.VideoPlayerFlutterApi(registrar.messenger());
-    Log.d("VideoPlayer", "hosttoFlutterApi inited");
-
     this.flutterState =
         new FlutterState(
             registrar.context(),
@@ -73,6 +71,9 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
 
   @Override
   public void onAttachedToEngine(FlutterPluginBinding binding) {
+    this.hostToFlutterApi = new Messages.VideoPlayerFlutterApi(binding.getBinaryMessenger());
+    Log.d("VideoPlayer", "hosttoFlutterApi inited");
+
     if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       try {
         HttpsURLConnection.setDefaultSSLSocketFactory(new CustomSSLSocketFactory());
@@ -129,10 +130,14 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
 
   // VideoPlayer ezt hívja meg, ha auto pause történt
   public void autoPauseCallback(Long textureId, Long ms){
-    this.hostToFlutterApi.autoPauseHappen(new PositionMessage.Builder()
-            .setPosition(ms)
-            .setTextureId(textureId)
-            .build(), (Void t) -> {});
+    if(this.hostToFlutterApi != null){
+      this.hostToFlutterApi.autoPauseHappen(new PositionMessage.Builder()
+              .setPosition(ms)
+              .setTextureId(textureId)
+              .build(), (Void t) -> {});
+    }else{
+      Log.d("VideoPlayer", "Host to flutter api is null");
+    }
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
