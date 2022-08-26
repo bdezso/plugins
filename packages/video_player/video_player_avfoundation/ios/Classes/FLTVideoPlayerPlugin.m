@@ -104,7 +104,8 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         NSLog(@"(NATIVE) Call pause by auto boundary timing");
         NSLog(@"(NATIVE) currentTime:");
         CMTimeShow(weakSelf.player.currentTime);
-
+        NSLog(@"(NATIVE) videoDuration:");
+        CMTimeShow(weakSelf.player.currentItem.duration);
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
         
@@ -234,10 +235,9 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                 httpHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers
                 autoPauseHappenCompletionHandler:(void (^)(NSNumber *pausedPosition))autoPauseHandler{
     
-    NSLog(@"Init with url called!");
+    NSLog(@"(NATIVE) Init with url called!");
     self.autoPauseHappen = autoPauseHandler;
     NSDictionary<NSString *, id> *options = @{AVURLAssetPreferPreciseDurationAndTimingKey:@YES};
-    NSLog(@"use prefeer precise duration and timing key");
     /* egyelőre nem használunk header-t
   if ([headers count] != 0) {
     options = @{
@@ -659,15 +659,13 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
                                      httpHeaders:input.httpHeaders
                 autoPauseHappenCompletionHandler:^(NSNumber *pausedPosition) {
         
-        // NSTimeInterval is defined as double
+        // Set last play pause timestamp
         long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
         NSNumber *timeStampObj = [NSNumber numberWithLongLong: milliseconds];
-        
         _lastPlayPauseEventTimestamp = timeStampObj;
         
-        
+        // Notify flutter side about the event (ezen a ponton jelenítjük meg flutter-el a kritikus pontot :) )
         FLTPositionMessage *msg = [FLTPositionMessage makeWithTextureId: [NSNumber numberWithLong:frameUpdater.textureId] position: pausedPosition];
-        
         
         [self->_hostToFlutterApi autoPauseHappenMsg:msg completion:^(NSError * _Nullable) {
             NSLog(@"(NATIVE) Auto pause event sent to flutter ");
