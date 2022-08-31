@@ -9,7 +9,6 @@ import android.os.Build;
 import android.util.LongSparseArray;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import io.flutter.FlutterInjector;
 import io.flutter.Log;
@@ -28,9 +27,25 @@ import io.flutter.view.TextureRegistry;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
+
+
+// Régen nem volt lambda...
+class VideoPlayerPluginCallback{
+  VideoPlayerPlugin plugin;
+  long textureId;
+  public VideoPlayerPluginCallback(VideoPlayerPlugin plugin, long textureId){
+    this.plugin = plugin;
+    this.textureId = textureId;
+  }
+
+  public void autoPauseCallback(Long ms){
+    this.plugin.autoPauseCallback(this.textureId,ms);
+  }
+}
 
 /** Android platform implementation of the VideoPlayerPlugin. */
 public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
@@ -143,7 +158,6 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
     }
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.O)
   public TextureMessage create(CreateMessage arg) {
     TextureRegistry.SurfaceTextureEntry handle =
         flutterState.textureRegistry.createSurfaceTexture();
@@ -170,11 +184,7 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
               null,
               null,
               options,
-                  (Long ms) -> {
-                this.autoPauseCallback(handle.id(),ms);
-                    return null;
-                  }
-          );
+                  new VideoPlayerPluginCallback(this,handle.id()));
     } else {
       @SuppressWarnings("unchecked")
       Map<String, String> httpHeaders = arg.getHttpHeaders();
@@ -187,14 +197,13 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
               arg.getFormatHint(),
               httpHeaders,
               options,
-                  (Long ms) -> {
-                    this.autoPauseCallback(handle.id(),ms);
-                    return null;
-                  });
+                  new VideoPlayerPluginCallback(this,handle.id()));
     }
     videoPlayers.put(handle.id(), player);
 
-    Long currentTime =  (Instant.now().toEpochMilli());
+    Date date = new Date();
+
+    long currentTime = date.getTime();
     TextureMessage result = new TextureMessage.Builder().setTextureId(handle.id()).setSentTimestampFromFlutter(currentTime).build();
     return result;
   }

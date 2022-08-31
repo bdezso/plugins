@@ -67,7 +67,7 @@ final class VideoPlayer {
 
   private final VideoPlayerOptions options;
 
-  private Function<Long,Void> autoPauseHappen;
+  private VideoPlayerPluginCallback pluginCallback;
 
   VideoPlayer(
       Context context,
@@ -77,12 +77,12 @@ final class VideoPlayer {
       String formatHint,
       @NonNull Map<String, String> httpHeaders,
       VideoPlayerOptions options,
-      Function<Long,Void> autoPauseCallback
+      VideoPlayerPluginCallback pluginCallback // Ezen keresztül értesíti a plugint a változásokról
       ) {
     this.eventChannel = eventChannel;
     this.textureEntry = textureEntry;
     this.options = options;
-    this.autoPauseHappen = autoPauseCallback;
+    this.pluginCallback = pluginCallback;
 
 
     ExoPlayer exoPlayer = new ExoPlayer.Builder(context).build();
@@ -263,7 +263,6 @@ final class VideoPlayer {
         !isMixMode);
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.N)
   void setPausePoints(long[] pausePointsMs){
     for(int i=0;i<pausePointsMs.length;i++){
       Long ms = pausePointsMs[i];
@@ -272,7 +271,7 @@ final class VideoPlayer {
               .createMessage(
                       (messageType, payload) -> {
                         Log.d("TAG", "Auto pause happen");
-                        this.autoPauseHappen.apply(ms);
+                        this.pluginCallback.autoPauseCallback(ms);
                       })
               .setLooper(Looper.getMainLooper())
               .setPayload(ms)

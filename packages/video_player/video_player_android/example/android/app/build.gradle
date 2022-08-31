@@ -37,7 +37,8 @@ android {
 
     defaultConfig {
         applicationId "io.flutter.plugins.videoplayerexample"
-        minSdkVersion 24
+        minSdkVersion 16
+        multiDexEnabled true
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
