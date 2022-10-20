@@ -79,7 +79,7 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
     NSMutableArray *times = [NSMutableArray array];
     // CMTime tömb elkészítése
         
-    NSLog(@"(NATIVE) 🔥 timescale: %d", _player.currentItem.duration.timescale);
+    // NSLog(@"(NATIVE) 🔥 timescale: %d", _player.currentItem.duration.timescale);
     
     for(int i=0;i<pausePointsInMs.count;i++){
         NSNumber *pausePointNSNumber = [pausePointsInMs objectAtIndex:i];
@@ -102,9 +102,9 @@ static void *playbackBufferFullContext = &playbackBufferFullContext;
         
         // Possible out of sync
         NSLog(@"(NATIVE) Call pause by auto boundary timing");
-        NSLog(@"(NATIVE) currentTime:");
+        NSLog(@"(NATIVE) currentTime below:");
         CMTimeShow(weakSelf.player.currentTime);
-        NSLog(@"(NATIVE) videoDuration:");
+        NSLog(@"(NATIVE) videoDuration below:");
         CMTimeShow(weakSelf.player.currentItem.duration);
         
         //Float64 seconds = CMTimeGetSeconds(self->_player.currentTime)*1000;
@@ -719,8 +719,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 - (void)play:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
     
-    NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
-    NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
+    //NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
+    //NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
 
     if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
         NSLog(@"Older message ignored play");
@@ -749,8 +749,8 @@ NS_INLINE CGFloat radiansToDegrees(CGFloat radians) {
 - (void)pause:(FLTTextureMessage *)input error:(FlutterError **)error {
     NSNumber *eventTimestamp = input.sentTimestampFromFlutter;
     
-    NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
-    NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
+    //NSLog(@"%lld event timestamp", [eventTimestamp longLongValue] );
+    //NSLog(@"%lld last timestamp", [_lastPlayPauseEventTimestamp longLongValue] );
 
     
     if([eventTimestamp longLongValue] < [_lastPlayPauseEventTimestamp longLongValue]){
