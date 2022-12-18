@@ -877,13 +877,13 @@ final class GoogleMapController
 
   private void tryToDestroyMan(MapView mapReference) {
     if (this.loadedCallbackPending) {
-      Log.e(TAG,"STILL UNDER LOADING NATIVE SIDE");
+      Log.e(TAG,"STILL UNDER LOADING NATIVE SIDE, id: " + this.id);
       Runnable r = () -> {
         this.tryToDestroyMan(mapReference);
       };
       handler.postDelayed(r, 200);
     }else{
-      Log.e(TAG,"OK RUN DESTROY");
+      Log.e(TAG,"OK RUN DESTROY, id: " + this.id);
 
       Runnable r = () -> {
         mapReference.onDestroy();
