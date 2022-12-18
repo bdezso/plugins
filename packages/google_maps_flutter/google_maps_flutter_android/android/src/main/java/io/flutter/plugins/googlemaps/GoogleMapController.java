@@ -888,7 +888,7 @@ final class GoogleMapController
       Runnable r = () -> {
         mapReference.onDestroy();
       };
-      handler.postDelayed(r, 200);
+      handler.postDelayed(r, 700);
     }
   }
 
