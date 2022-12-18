@@ -883,12 +883,11 @@ final class GoogleMapController
       };
       handler.postDelayed(r, 200);
     }else{
-      Log.e(TAG,"OK RUN DESTROY, id: " + this.id);
-
       Runnable r = () -> {
+        Log.e(TAG,"OK RUN DESTROY, id: " + this.id);
         mapReference.onDestroy();
       };
-      handler.postDelayed(r, 700);
+      handler.postDelayed(r, 2000);
     }
   }
 
