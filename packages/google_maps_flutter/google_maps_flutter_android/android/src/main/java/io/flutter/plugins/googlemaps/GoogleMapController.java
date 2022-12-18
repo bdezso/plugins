@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Choreographer;
+
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +46,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.os.Handler;
 
 /** Controller of a single GoogleMaps MapView instance. */
 final class GoogleMapController
@@ -84,6 +86,7 @@ final class GoogleMapController
   private List<Object> initialPolylines;
   private List<Object> initialCircles;
   private List<Map<String, ?>> initialTileOverlays;
+  private Handler handler = new Handler();
 
   GoogleMapController(
       int id,
