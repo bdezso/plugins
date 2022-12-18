@@ -174,6 +174,8 @@ final class GoogleMapController
         new GoogleMap.OnMapLoadedCallback() {
           @Override
           public void onMapLoaded() {
+            print("onMapLoaded called NATIVE SIDE");
+
             loadedCallbackPending = false;
             postFrameCallback(
                 () -> {
@@ -871,6 +873,23 @@ final class GoogleMapController
         permission, android.os.Process.myPid(), android.os.Process.myUid());
   }
 
+  private void tryToDestroyMan(MapView mapReference) {
+    if (this.loadedCallbackPending) {
+      print("STILL UNDER LOADING NATIVE SIDE");
+      Runnable r = () -> {
+        this.tryToDestroyMan(mapReference);
+      };
+      handler.postDelayed(r, 200);
+    }else{
+      print("OK RUN DESTROY");
+
+      Runnable r = () -> {
+        mapReference.onDestroy()
+      };
+      handler.postDelayed(r, 200);
+    }
+  }
+
   private void destroyMapViewIfNecessary() {
     if (mapView == null) {
       return;
@@ -879,11 +898,8 @@ final class GoogleMapController
     final MapView mapReference = mapView; // keep a reference to the mapView for the callback
     mapView = null;
 
+    this.tryToDestroyMan(mapReference);
 
-    Runnable r = () -> {
-      mapReference.onDestroy();
-    };
-    handler.postDelayed(r, 1500);
   }
 
   public void setIndoorEnabled(boolean indoorEnabled) {
