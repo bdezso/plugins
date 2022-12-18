@@ -174,7 +174,7 @@ final class GoogleMapController
         new GoogleMap.OnMapLoadedCallback() {
           @Override
           public void onMapLoaded() {
-            Log.e("onMapLoaded called NATIVE SIDE");
+            Log.e(TAG,"onMapLoaded called NATIVE SIDE");
 
             loadedCallbackPending = false;
             postFrameCallback(
@@ -875,13 +875,13 @@ final class GoogleMapController
 
   private void tryToDestroyMan(MapView mapReference) {
     if (this.loadedCallbackPending) {
-      Log.e("STILL UNDER LOADING NATIVE SIDE");
+      Log.e(TAG,"STILL UNDER LOADING NATIVE SIDE");
       Runnable r = () -> {
         this.tryToDestroyMan(mapReference);
       };
       handler.postDelayed(r, 200);
     }else{
-      Log.e("OK RUN DESTROY");
+      Log.e(TAG,"OK RUN DESTROY");
 
       Runnable r = () -> {
         mapReference.onDestroy();
