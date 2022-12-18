@@ -109,6 +109,8 @@ final class GoogleMapController
     this.polylinesController = new PolylinesController(methodChannel, density);
     this.circlesController = new CirclesController(methodChannel, density);
     this.tileOverlaysController = new TileOverlaysController(methodChannel);
+
+    Log.e(TAG,"GoogleMapController CREATED" + id);
   }
 
   @Override
