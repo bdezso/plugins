@@ -879,16 +879,11 @@ final class GoogleMapController
     final MapView mapReference = mapView; // keep a reference to the mapView for the callback
     mapView = null;
 
-    // This attempts to work around an issue where the mapView is still being used
-    // by the render thread after disposal.
-    // Delaying the actual mapView disposal by some fixed amount of time, attempts
-    // to avoid the issue.
-    // See https://github.com/flutter/flutter/issues/105965.
+
     Runnable r = () -> {
       mapReference.onDestroy();
     };
-    handler.postDelayed(r, 1000);
-
+    handler.postDelayed(r, 1500);
   }
 
   public void setIndoorEnabled(boolean indoorEnabled) {
