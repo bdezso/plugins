@@ -875,13 +875,13 @@ final class GoogleMapController
 
   private void tryToDestroyMan(MapView mapReference) {
     if (this.loadedCallbackPending) {
-      print("STILL UNDER LOADING NATIVE SIDE");
+      Log.e("STILL UNDER LOADING NATIVE SIDE");
       Runnable r = () -> {
         this.tryToDestroyMan(mapReference);
       };
       handler.postDelayed(r, 200);
     }else{
-      print("OK RUN DESTROY");
+      Log.e("OK RUN DESTROY");
 
       Runnable r = () -> {
         mapReference.onDestroy()
