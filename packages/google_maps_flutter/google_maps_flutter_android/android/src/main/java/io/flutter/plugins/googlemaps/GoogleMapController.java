@@ -894,22 +894,7 @@ final class GoogleMapController
       googleMap.setOnPoiClickListener(null);
       googleMap.setOnMyLocationButtonClickListener(null);
       googleMap.setOnMyLocationClickListener(null);
-      googleMap.setOnIndoorStateChangeListener(null);
-      googleMap.setOnGroundOverlayClickListener(null);
-      googleMap.setOnTileOverlayClickListener(null);
-      googleMap.setOnCameraMoveCanceledListener(null);
-      googleMap.setOnMapLoadedCallback(null);
-      googleMap.setOnMapLongClickListener(null);
-      googleMap.setOnMapClickListener(null);
-      googleMap.setOnMarkerClickListener(null);
-      googleMap.setOnMarkerDragListener(null);
-      googleMap.setOnInfoWindowClickListener(null);
-      googleMap.setOnInfoWindowLongClickListener(null);
-      googleMap.setOnInfoWindowCloseListener(null);
-      googleMap.setOnPolygonClickListener(null);
-      googleMap.setOnPolylineClickListener(null);
-      googleMap.setOnCircleClickListener(null);
-      googleMap.setOnGroundOverlayClickListener(null);
+      googleMap.setOnIndoorStateChangeL
       googleMap.setOnPoiClickListener(null);
       googleMap.setOnIndoorStateChangeListener(null);
       googleMap.setOnMyLocationButtonClickListener(null);
