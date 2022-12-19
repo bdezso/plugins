@@ -875,6 +875,103 @@ final class GoogleMapController
         permission, android.os.Process.myPid(), android.os.Process.myUid());
   }
 
+  // Set every field to null
+  private void clearAllFcknMemoryLeak() {
+    if (googleMap != null) {
+      googleMap.setOnCameraMoveStartedListener(null);
+      googleMap.setOnCameraMoveListener(null);
+      googleMap.setOnCameraIdleListener(null);
+      googleMap.setOnMarkerClickListener(null);
+      googleMap.setOnInfoWindowClickListener(null);
+      googleMap.setOnInfoWindowCloseListener(null);
+      googleMap.setOnInfoWindowLongClickListener(null);
+      googleMap.setOnMarkerDragListener(null);
+      googleMap.setOnPolygonClickListener(null);
+      googleMap.setOnPolylineClickListener(null);
+      googleMap.setOnCircleClickListener(null);
+      googleMap.setOnMapClickListener(null);
+      googleMap.setOnMapLongClickListener(null);
+      googleMap.setOnPoiClickListener(null);
+      googleMap.setOnMyLocationButtonClickListener(null);
+      googleMap.setOnMyLocationClickListener(null);
+      googleMap.setOnIndoorStateChangeListener(null);
+      googleMap.setOnGroundOverlayClickListener(null);
+      googleMap.setOnTileOverlayClickListener(null);
+      googleMap.setOnCameraMoveCanceledListener(null);
+      googleMap.setOnMapLoadedCallback(null);
+      googleMap.setOnMapLongClickListener(null);
+      googleMap.setOnMapClickListener(null);
+      googleMap.setOnMarkerClickListener(null);
+      googleMap.setOnMarkerDragListener(null);
+      googleMap.setOnInfoWindowClickListener(null);
+      googleMap.setOnInfoWindowLongClickListener(null);
+      googleMap.setOnInfoWindowCloseListener(null);
+      googleMap.setOnPolygonClickListener(null);
+      googleMap.setOnPolylineClickListener(null);
+      googleMap.setOnCircleClickListener(null);
+      googleMap.setOnGroundOverlayClickListener(null);
+      googleMap.setOnPoiClickListener(null);
+      googleMap.setOnIndoorStateChangeListener(null);
+      googleMap.setOnMyLocationButtonClickListener(null);
+      googleMap.setOnMyLocationClickListener(null);
+      googleMap.setOnCameraMoveStartedListener(null);
+      googleMap.setOnCameraMoveListener(null);
+      googleMap.setOnCameraMoveCanceledListener(null);
+      googleMap.setOnCameraIdleListener(null);
+      googleMap.setOnMapLoadedCallback(null);
+      googleMap.setOnMarkerDragListener(null);
+      googleMap.setOnInfoWindowClickListener(null);
+      googleMap.setOnInfoWindowCloseListener(null);
+      googleMap.setOnInfoWindowLongClickListener(null);
+      googleMap.setOnMarkerClickListener(null);
+      googleMap.setOnPolygonClickListener(null);
+      googleMap.setOnPolylineClickListener(null);
+      googleMap.setOnCircleClickListener(null);
+      googleMap.setOnMapClickListener(null);
+      googleMap.setOnMapLongClickListener(null);
+      googleMap.setOnPoiClickListener(null);
+      googleMap.setOnMyLocationButtonClickListener(null);
+    }
+
+    if (mapView != null) {
+      mapView.onDestroy();
+    }
+
+    mapView = null;
+    googleMap = null;
+    initialMarkers = null;
+    initialPolygons = null;
+    initialPolylines = null;
+    initialCircles = null;
+    initialTileOverlays = null;
+    initialGroundOverlays = null;
+    initialPadding = null;
+    initialPosition = null;
+    initialMinMaxZoomPreference = null;
+    initialZoomGesturesEnabled = null;
+    initialScrollGesturesEnabled = null;
+    initialTiltGesturesEnabled = null;
+    initialRotateGesturesEnabled = null;
+    initialCompassEnabled = null;
+    initialMapToolbarEnabled = null;
+    initialMyLocationEnabled = null;
+    initialMyLocationButtonEnabled = null;
+    initialTrafficEnabled = null;
+    initialBuildingsEnabled = null;
+    initialIndoorEnabled = null;
+    initialLiteModeEnabled = null;
+    initialMapStyle = null;
+    initialContentDescription = null;
+    initialZoomControlsEnabled = null;
+    initialZoomGesturesEnabled = null;
+    initialScrollGesturesEnabled = null;
+    initialTiltGesturesEnabled = null;
+    initialRotateGesturesEnabled = null;
+    initialCompassEnabled = null;
+
+  }
+
+
   private void tryToDestroyMan(MapView mapReference) {
     if (this.loadedCallbackPending) {
       Log.e(TAG,"STILL UNDER LOADING NATIVE SIDE, id: " + this.id);
@@ -891,6 +988,7 @@ final class GoogleMapController
 
         mapReference.onDestroy();
         mapReference.removeAllViews();
+        this.clearAllFcknMemoryLeak();
 
         Log.i(TAG,"DESTROYED id: " + this.id);
       };
