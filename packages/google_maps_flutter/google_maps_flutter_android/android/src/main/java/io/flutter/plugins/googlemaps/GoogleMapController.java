@@ -894,7 +894,6 @@ final class GoogleMapController
       googleMap.setOnPoiClickListener(null);
       googleMap.setOnMyLocationButtonClickListener(null);
       googleMap.setOnMyLocationClickListener(null);
-      googleMap.setOnIndoorStateChangeL
       googleMap.setOnPoiClickListener(null);
       googleMap.setOnIndoorStateChangeListener(null);
       googleMap.setOnMyLocationButtonClickListener(null);
