@@ -932,43 +932,6 @@ final class GoogleMapController
       googleMap.setOnPoiClickListener(null);
       googleMap.setOnMyLocationButtonClickListener(null);
     }
-
-    if (mapView != null) {
-      mapView.onDestroy();
-    }
-
-    mapView = null;
-    googleMap = null;
-    initialMarkers = null;
-    initialPolygons = null;
-    initialPolylines = null;
-    initialCircles = null;
-    initialTileOverlays = null;
-    initialGroundOverlays = null;
-    initialPadding = null;
-    initialPosition = null;
-    initialMinMaxZoomPreference = null;
-    initialZoomGesturesEnabled = null;
-    initialScrollGesturesEnabled = null;
-    initialTiltGesturesEnabled = null;
-    initialRotateGesturesEnabled = null;
-    initialCompassEnabled = null;
-    initialMapToolbarEnabled = null;
-    initialMyLocationEnabled = null;
-    initialMyLocationButtonEnabled = null;
-    initialTrafficEnabled = null;
-    initialBuildingsEnabled = null;
-    initialIndoorEnabled = null;
-    initialLiteModeEnabled = null;
-    initialMapStyle = null;
-    initialContentDescription = null;
-    initialZoomControlsEnabled = null;
-    initialZoomGesturesEnabled = null;
-    initialScrollGesturesEnabled = null;
-    initialTiltGesturesEnabled = null;
-    initialRotateGesturesEnabled = null;
-    initialCompassEnabled = null;
-
   }
 
 
