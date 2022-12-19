@@ -884,8 +884,15 @@ final class GoogleMapController
       handler.postDelayed(r, 200);
     }else{
       Runnable r = () -> {
-        Log.e(TAG,"OK RUN DESTROY, id: " + this.id);
+        Log.e(TAG,"OK START DESTROY, id: " + this.id);
+        
+        this.tileOverlaysController.clearAllTileCaches();
+        this.polylinesController.setGoogleMap(null);
+
         mapReference.onDestroy();
+        mapReference.removeAllViews();
+
+        Log.i(TAG,"DESTROYED id: " + this.id);
       };
       handler.postDelayed(r, 2000);
     }

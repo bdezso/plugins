@@ -67,6 +67,12 @@ class TileOverlaysController {
     }
   }
 
+  void clearAllTileCaches() {
+    for (TileOverlayController tileOverlayController : tileOverlayIdToController.values()) {
+      tileOverlayController.clearTileCache();
+    }
+  }
+
   Map<String, Object> getTileOverlayInfo(String tileOverlayId) {
     if (tileOverlayId == null) {
       return null;
