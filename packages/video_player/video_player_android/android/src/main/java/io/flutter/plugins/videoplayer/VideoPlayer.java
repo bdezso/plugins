@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import io.flutter.Log;
+import com.google.android.exoplayer2.util.ExoPlayerLibraryInfo;
 
 final class VideoPlayer {
   private static final String FORMAT_SS = "ss";
@@ -68,6 +70,9 @@ final class VideoPlayer {
       String formatHint,
       @NonNull Map<String, String> httpHeaders,
       VideoPlayerOptions options) {
+    // info log about exoplayer version
+    Log.i("VideoPlayer", "ExoPlayer version: " + ExoPlayerLibraryInfo.VERSION);
+
     this.eventChannel = eventChannel;
     this.textureEntry = textureEntry;
     this.options = options;
