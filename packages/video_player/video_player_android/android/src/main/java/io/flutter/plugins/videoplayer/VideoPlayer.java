@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import com.google.android.exoplayer2.util.ExoPlayerLibraryInfo;
+import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 
 
 final class VideoPlayer {
