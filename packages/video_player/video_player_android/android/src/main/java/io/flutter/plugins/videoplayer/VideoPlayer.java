@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import com.google.android.exoplayer2.util.ExoPlayerLibraryInfo;
 
 
 final class VideoPlayer {
@@ -84,6 +85,8 @@ final class VideoPlayer {
     this.options = options;
     this.pluginCallback = pluginCallback;
 
+    // Print exoplayer version
+    Log.d("ExoPlayer version", ExoPlayerLibraryInfo.VERSION_SLASHY);
 
     ExoPlayer exoPlayer = new ExoPlayer.Builder(context).build();
 
