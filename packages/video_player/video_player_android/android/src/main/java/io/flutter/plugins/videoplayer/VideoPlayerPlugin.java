@@ -43,7 +43,9 @@ class VideoPlayerPluginCallback{
   }
 
   public void autoPauseCallback(Long ms){
-    this.plugin.autoPauseCallback(this.textureId,ms);
+    if(this.plugin != null && ms != null){
+      this.plugin.autoPauseCallback(this.textureId,ms);
+    }
   }
 }
 
@@ -147,6 +149,8 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   public void autoPauseCallback(Long textureId, Long ms){
     if(this.hostToFlutterApi != null){
       VideoPlayer player = videoPlayers.get(textureId);
+      // firebase-ben találtunk egy crash-t, ami szerint itt null-on lett hívva a pause függvény
+      if(player == null) return; 
       player.pause();
 
       this.hostToFlutterApi.autoPauseHappen(new PositionMessage.Builder()
