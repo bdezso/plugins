@@ -26,6 +26,22 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
+// Régen nem volt lambda...
+class VideoPlayerPluginCallback{
+  VideoPlayerPlugin plugin;
+  long textureId;
+  public VideoPlayerPluginCallback(VideoPlayerPlugin plugin, long textureId){
+    this.plugin = plugin;
+    this.textureId = textureId;
+  }
+
+  public void autoPauseCallback(Long ms){
+    if(this.plugin != null && ms != null){
+      this.plugin.autoPauseCallback(this.textureId,ms);
+    }
+  }
+}
+
 /** Android platform implementation of the VideoPlayerPlugin. */
 public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   private static final String TAG = "VideoPlayerPlugin";
